@@ -1,17 +1,17 @@
 {
-    "name": ":vendor_slug/:package_slug",
-    "description": ":package_description",
+    "name": "rawilk/filament-quill",
+    "description": "Quill rich text editor for Filament.",
     "keywords": [
-        ":vendor_name",
+        "rawilk",
         "laravel",
-        ":package_slug"
+        "filament-quill"
     ],
-    "homepage": "https://github.com/:vendor_slug/:package_slug",
+    "homepage": "https://github.com/rawilk/filament-quill",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": "author@domain.com",
+            "name": "Randall Wilk",
+            "email": "randall@randallwilk.dev",
             "role": "Developer"
         }
     ],
@@ -31,20 +31,19 @@
     },
     "autoload": {
         "psr-4": {
-            "VendorName\\Skeleton\\": "src/",
-            "VendorName\\Skeleton\\Database\\Factories\\": "database/factories/"
+            "Rawilk\\FilamentQuill\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "VendorName\\Skeleton\\Tests\\": "tests/"
+            "Rawilk\\FilamentQuill\\Tests\\": "tests/"
         }
     },
     "scripts": {
         "post-autoload-dump": [
             "@php ./vendor/bin/testbench package:discover --ansi"
         ],
-        "clear": "@php vendor/bin/testbench package:purge-skeleton --ansi",
+        "clear": "@php vendor/bin/testbench package:purge-filament-quill --ansi",
         "analyse": "vendor/bin/phpstan analyse",
         "test": "vendor/bin/pest",
         "test-coverage": "vendor/bin/pest --coverage",
@@ -59,11 +58,8 @@
     "extra": {
         "laravel": {
             "providers": [
-                "VendorName\\Skeleton\\SkeletonServiceProvider"
-            ],
-            "aliases": {
-                "Skeleton": "Skeleton"
-            }
+                "Rawilk\\FilamentQuill\\FilamentQuillServiceProvider"
+            ]
         }
     },
     "minimum-stability": "dev",
