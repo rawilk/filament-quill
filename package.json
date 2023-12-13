@@ -1,0 +1,21 @@
+{
+    "name": "filament-quill",
+    "private": "true",
+    "type": "module",
+    "scripts": {
+        "dev:scripts": "node bin/build.js --dev",
+        "dev:styles": "tailwindcss -i resources/css/app.css -o resources/dist/filament-quill.css --watch",
+        "build:scripts": "node bin/build.js",
+        "build:styles": "tailwindcss -i resources/css/app.css -o resources/dist/filament-quill.css --minify",
+        "dev": "npm-run-all --parallel dev:*",
+        "build": "npm-run-all build:*"
+    },
+    "dependencies": {
+        "quill": "^1.3.7"
+    },
+    "devDependencies": {
+        "esbuild": "^0.19.9",
+        "npm-run-all": "^4.1.5",
+        "tailwindcss": "^3.3.6"
+    }
+}
