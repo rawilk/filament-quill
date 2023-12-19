@@ -201,6 +201,64 @@ QuillEditor::make('content')
 
 The last parameter, `showSelectedOption` only applies to dropdown buttons. When set to true, when a user clicks on an option, it will show the selected option's text as the dropdown label, just like the font family or font size toolbar buttons do.
 
+## Uploading Images
+
+When the `ToolbarButton::Image` button is enabled, a user will be able to insert an image into the editor. Similar to filament's rich text editor, we will upload the image to the server and use that image's url on the server instead of storing it as a base64 encoded image in the content. You can customize how and where the images are stored on the server using these methods:
+
+```php
+use Rawilk\FilamentQuill\Filament\Forms\Components\QuillEditor;
+
+QuillEditor::make('content')
+    ->fileAttachmentsDisk('s3')
+    ->fileAttachmentsDirectory('attachments')
+    ->fileAttachmentsVisibility('private')
+```
+
+Note: We do not handle tracking and managing the uploaded images. For example, if an image is deleted from the content, we will not remove it from the server, so images have a high probability of becoming orphaned. We will dispatch a `quill-image-uploaded` alpine event when we upload an image, and a `quill-images-deleted` alpine event when our JavaScript detects an image has been removed from the content. Both of these events will receive the fully qualified urls of the relevant images, and the name of the field the event was dispatched from. You could listen for these events and handle the images:
+
+```php
+use Rawilk\FilamentQuill\Filament\Forms\Components\QuillEditor;
+
+QuillEditor::make('content')
+    ->extraAlpineAttributes([
+        '@quill-image-uploaded' => <<<'JS'
+        ({ detail: { url, statePath } }) => {
+            // handle the upload here.
+        }
+        JS,
+        '@quill-images-deleted' => <<<'JS'
+        ({ detail: { urls, statePath } }) => {
+            // handle the upload here.
+        }
+        JS,
+    ])
+```
+
+**Note:** You may want to delay deleting the images from the server when listening to the `quill-images-deleted` event until the user triggers a save, and/or you reset the [history](#history) state of the editor.
+
+## History
+
+By default, the editor includes toolbar buttons for undo/redo history actions. When dealing with [Images](#uploading-images) or some other use-cases, you may want to reset the history state of the editor so the user can't "undo" a change back to a broken image if you removed it from the server. This can easily be accomplished by calling the `clearHistory` method on the component from an action, for example.
+
+Here's an example of resetting the history state on an edit resource page form using the `afterSave` hook:
+
+```php
+use Filament\Forms\Components\Component;
+
+protected function afterSave(): void
+{
+    $component = $this->form->getComponent('data.content');
+    
+    $component->clearHistory();
+}
+```
+
+Behind the scenes, the editor component will dispatch the `quill-history-clear` browser event, which our javascript will be listening for. If you aren't able to get a component instance, you can manually dispatch the event yourself. You will just need to know the state path for the component (typically `data.your_field_name`).
+
+```php
+$this->dispatch('quill-history-clear', id: 'data.content');
+```
+
 ## Scripts
 
 ### Setup
