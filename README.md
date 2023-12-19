@@ -111,6 +111,96 @@ QuillEditor::make('content')
     ])
 ```
 
+## Placeholders
+
+A requirement I often have for rich text editors is the ability to provide a list of placeholder variables that an end-user can select and insert into the editor. My most common use case for this is for email templates. I've made it simple to do this in this package. All you need to do is provide an array of placeholders to the component.
+
+```php
+use Rawilk\FilamentQuill\Filament\Forms\Components\QuillEditor;
+
+QuillEditor::make('content')
+    ->placeholders([
+        'USER_NAME',
+        'USER_EMAIL',
+        'CURRENT_DATE',    
+    ])
+```
+
+![placeholders example](https://github.com/rawilk/filament-quill/blob/main/art/placeholders.png?raw=true)
+
+As you can see, we take care of adding the toolbar button and registering a [Handler](#handlers) to insert the placeholder variable into the editor for you. The editor will surround the variable with the `[` and `]` characters before the variable is inserted, however these characters can be [customized](#surrounding-characters).
+
+**Note:** Parsing and replacing your variables in your content is outside the scope of this form component. You will need to handle that part yourself.
+
+### Surrounding Characters
+
+By default, we will surround a variable with `[` and `]` before it's inserted into the editor, so a the `USER_NAME` variable would become `[USER_NAME]` when we insert it.
+
+To change these characters, you can use the `surroundPlaceholdersWith()` method:
+
+```php
+use Rawilk\FilamentQuill\Filament\Forms\Components\QuillEditor;
+
+QuillEditor::make('content')
+    ->placeholders([
+        'USER_NAME',
+        'USER_EMAIL',
+        'CURRENT_DATE',    
+    ])
+    ->surroundPlaceholdersWith(start: '{{ ', end: ' }}')
+```
+
+Now when a variable is inserted, it will look like `{{ USER_NAME }}` instead.
+
+### Placeholder Button Label
+
+To change the text on the placeholder button, you can either modify the `filament-quill::quill.placeholders.label` translation, or you can pass in a label via the `placeholderButtonLabel()` method.
+
+## Handlers
+
+If you want to override a handler for an existing toolbar button, you can define your custom JavaScript [handlers](https://quilljs.com/docs/modules/toolbar/#handlers) using the `handlers()` method. Here's an example of how to use your own handler for the `bold` toolbar button:
+
+```php
+use Rawilk\FilamentQuill\Filament\Forms\Components\QuillEditor;
+
+QuillEditor::make('content')
+    ->handlers([
+        'bold' => <<<'JS'
+        function (value) {
+            if (value) {
+                // this.quill.format(...);
+            }
+        }
+        JS,
+    ])
+```
+
+> Note: Inside your callback functions, you will have access to the quill editor instance via `this.quill` as long as you don't use an arrow function.
+
+## Custom Toolbar Buttons
+
+To add your own toolbar buttons, you can use the `addToolbarButton()` method. You will need to provide a name, a label, and a JavaScript handler for the button. If you need a dropdown instead, you will need to provide an array of options as well.
+
+```php
+use Rawilk\FilamentQuill\Filament\Forms\Components\QuillEditor;
+
+QuillEditor::make('content')
+    ->addToolbarButton(
+        name: 'custom',
+        label: 'Custom button',
+        handler: <<<'JS'
+        function (value) {
+            console.log(value);
+            // this.quill.insertText(0, value);
+        },
+        JS,
+        // options: ['option 1', 'option 2'],
+        // showSelectedOption: true,
+    )
+```
+
+The last parameter, `showSelectedOption` only applies to dropdown buttons. When set to true, when a user clicks on an option, it will show the selected option's text as the dropdown label, just like the font family or font size toolbar buttons do.
+
 ## Scripts
 
 ### Setup
