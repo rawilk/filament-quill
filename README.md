@@ -248,7 +248,7 @@ use Filament\Forms\Components\Component;
 protected function afterSave(): void
 {
     $component = $this->form->getComponent('data.content');
-    
+
     $component->clearHistory();
 }
 ```
