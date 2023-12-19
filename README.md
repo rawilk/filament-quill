@@ -214,7 +214,7 @@ QuillEditor::make('content')
     ->fileAttachmentsVisibility('private')
 ```
 
-Note: We do not handle tracking and managing the uploaded images. For example, if an image is deleted from the content, we will not remove it from the server, so images have a high probability of becoming orphaned. We will dispatch a `quill-image-uploaded` alpine event when we upload an image, and a `quill-images-deleted` alpine event when our JavaScript detects an image has been removed from the content. Both of these events will receive the fully qualified urls of the relevant images, and the name of the field the event was dispatched from. You could listen for these events and handle the images:
+Note: We do not handle tracking and managing the uploaded images. For example, if an image is deleted from the content, we will not remove it from the server, so images have a high probability of becoming orphaned. We will dispatch a `quill-image-uploaded` alpine event when we upload an image, and a `quill-images-deleted` alpine event when our JavaScript detects an image has been removed from the content. Both of these events will receive the fully qualified urls of the relevant images, and the name of the field the event was dispatched from. You could listen for these events and track the absolute urls of the images:
 
 ```php
 use Rawilk\FilamentQuill\Filament\Forms\Components\QuillEditor;
@@ -233,6 +233,8 @@ QuillEditor::make('content')
         JS,
     ])
 ```
+
+You could alternatively provide a callback to the `saveUploadedFileAttachmentsUsing()` method on the editor to help you track the files, however that route may require more work on your end.
 
 **Note:** You may want to delay deleting the images from the server when listening to the `quill-images-deleted` event until the user triggers a save, and/or you reset the [history](#history) state of the editor.
 
