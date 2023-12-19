@@ -51,6 +51,68 @@ This will provide an editor that will look like this in your form:
 
 ![basic example](https://github.com/rawilk/filament-quill/blob/main/art/basic.png?raw=true)
 
+## Toolbar Buttons
+
+You may set the toolbar buttons for the editor using the `toolbarButtons()` method. The options shown here are the defaults. Please consult the `ToolbarButton` enum for a full
+list of available toolbar buttons.
+
+```php
+use Rawilk\FilamentQuill\Filament\Forms\Components\QuillEditor;
+use Rawilk\FilamentQuill\Enums\ToolbarButton;
+
+QuillEditor::make('content')
+    ->toolbarButtons([
+        ToolbarButton::Font,
+        ToolbarButton::Size,
+        ToolbarButton::Bold,
+        ToolbarButton::Italic,
+        ToolbarButton::Underline,
+        ToolbarButton::Strike,
+        ToolbarButton::BlockQuote,
+        ToolbarButton::OrderedList,
+        ToolbarButton::UnorderedList,
+        ToolbarButton::Indent,
+        ToolbarButton::Link,
+        ToolbarButton::Image,
+        ToolbarButton::Scripts,
+        ToolbarButton::TextAlign,
+        ToolbarButton::TextColor,
+        ToolbarButton::BackgroundColor,
+        ToolbarButton::Undo,
+        ToolbarButton::Redo,
+        ToolbarButton::ClearFormat,
+    ])
+```
+
+You may alternatively use the `disableToolbarButtons()` method to disable specific buttons:
+
+```php
+use Rawilk\FilamentQuill\Filament\Forms\Components\QuillEditor;
+use Rawilk\FilamentQuill\Enums\ToolbarButton;
+
+QuillEditor::make('content')
+    ->disableToolbarButtons([
+        ToolbarButton::BlockQuote,
+        ToolbarButton::CodeBlock,
+    ])
+```
+
+To completely disable all toolbar buttons, pass an empty array to `toolbarButtons([])`, or use the `disableAllToolbarButtons()` method.
+
+You can also enable specific toolbar buttons using the `enableToolbarButtons()` method:
+
+```php
+use Rawilk\FilamentQuill\Filament\Forms\Components\QuillEditor;
+use Rawilk\FilamentQuill\Enums\ToolbarButton;
+
+QuillEditor::make('content')
+    ->enableToolbarButtons([
+        ToolbarButton::Font,
+    ])
+```
+
+> Note: All buttons are enabled by default, so this is mostly useful if you are disabling buttons globally but want to enable certain ones on a specific editor instance.
+
 ## Scripts
 
 ### Setup
