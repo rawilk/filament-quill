@@ -34,13 +34,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Rawilk\\FilamentQuill\\": "src/",
-            "Rawilk\\FilamentQuill\\Tests\\Database\\Factories\\": "tests/Fixtures/database/factories"
+            "Rawilk\\FilamentQuill\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Rawilk\\FilamentQuill\\Tests\\": "tests/"
+            "Rawilk\\FilamentQuill\\Tests\\": "tests/",
+            "Rawilk\\FilamentQuill\\Tests\\Fixtures\\Database\\Factories\\": "tests/Fixtures/database/factories"
         }
     },
     "scripts": {
