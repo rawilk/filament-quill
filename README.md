@@ -93,7 +93,7 @@ use Rawilk\FilamentQuill\Enums\ToolbarButton;
 QuillEditor::make('content')
     ->disableToolbarButtons([
         ToolbarButton::BlockQuote,
-        ToolbarButton::CodeBlock,
+        ToolbarButton::Font,
     ])
 ```
 
@@ -107,11 +107,9 @@ use Rawilk\FilamentQuill\Enums\ToolbarButton;
 
 QuillEditor::make('content')
     ->enableToolbarButtons([
-        ToolbarButton::Font,
+        ToolbarButton::CodeBlock,
     ])
 ```
-
-> Note: All buttons are enabled by default, so this is mostly useful if you are disabling buttons globally but want to enable certain ones on a specific editor instance.
 
 ## Scripts
 
