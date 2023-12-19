@@ -122,7 +122,7 @@ QuillEditor::make('content')
     ->placeholders([
         'USER_NAME',
         'USER_EMAIL',
-        'CURRENT_DATE',    
+        'CURRENT_DATE',
     ])
 ```
 
@@ -145,7 +145,7 @@ QuillEditor::make('content')
     ->placeholders([
         'USER_NAME',
         'USER_EMAIL',
-        'CURRENT_DATE',    
+        'CURRENT_DATE',
     ])
     ->surroundPlaceholdersWith(start: '{{ ', end: ' }}')
 ```
