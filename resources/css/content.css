@@ -1,0 +1,302 @@
+.quill-content {
+    &, &.prose, .ql-editor {
+        font-size: var(--ql-default-size, 14px);
+
+        &:not(.fi-disabled) {
+            @apply text-gray-800 dark:text-white;
+        }
+
+        @apply font-sans;
+    }
+
+    &, .ql-editor {
+        /* quill overrides */
+
+        img {
+            @apply inline-block;
+        }
+
+        ul,
+        ol {
+            padding-left: 1.625em;
+        }
+
+        :where(ol):not(:where([class~=not-prose] *)) {
+            padding-inline-end: 0 !important;
+            padding-inline-start: 1.625em !important;
+        }
+
+        li:not(.ql-direction-rtl) {
+            padding-left: .375em;
+            list-style-type: unset;
+
+            &::before {
+                margin-left: unset;
+                margin-right: unset;
+                text-align: unset;
+                content: unset;
+            }
+        }
+
+        blockquote {
+            @apply border-l-4 border-l-[--tw-prose-quote-borders];
+            padding-left: 1em;
+            margin: 0;
+        }
+
+        :where(a):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+            @apply underline text-[color:var(--tw-prose-links)];
+        }
+
+        a {
+            @apply text-primary-600 dark:text-primary-400;
+        }
+
+        pre,
+        pre.ql-syntax {
+            border-radius: .375rem;
+            padding: 0.8571429em 1.1428571em;
+            margin-top: 1.7142857em;
+            margin-bottom: 1.7142857em;
+            @apply bg-[--tw-prose-pre-bg]
+            text-[color:var(--tw-prose-pre-code)];
+
+            &:where(:first-child):not(:where([class~="not-prose"], [class~="note-prose"] *)) {
+                @apply mt-0;
+            }
+
+            &:where(:last-child):not(:where([class~="not-prose"], [class~="note-prose"] *)) {
+                @apply mb-0;
+            }
+        }
+
+        p {
+            @apply my-[1.25em];
+
+            &:where(:first-child):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+                @apply mt-0;
+            }
+
+            &:where(:last-child):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+                @apply mb-0;
+            }
+        }
+
+        .ql-align-center {
+            @apply text-center;
+        }
+
+        .ql-align-justify {
+            @apply text-justify;
+        }
+
+        .ql-align-right {
+            @apply text-right;
+        }
+
+        .ql-font-serif,
+        .ql-editor .ql-font-serif {
+            @apply font-serif;
+        }
+
+        .ql-font-monospace,
+        .ql-editor .ql-font-monospace {
+            @apply font-mono;
+        }
+
+        .ql-size-small,
+        .ql-editor .ql-size-small {
+            @apply text-sm;
+        }
+
+        .ql-size-large,
+        .ql-editor .ql-size-large {
+            @apply text-2xl;
+        }
+
+        .ql-size-huge,
+        .ql-editor .ql-size-huge {
+            @apply text-3xl;
+        }
+
+        .ql-indent-1 {
+            &.ql-direction-rtl.ql-align-right {
+                padding-right: 3em;
+            }
+
+            &:not(.ql-direction-rtl) {
+                padding-left: 3em;
+            }
+        }
+
+        li.ql-indent-1 {
+            &.ql-direction-rtl.ql-align-right {
+                padding-right: 4.5em;
+            }
+
+            &:not(.ql-direction-rtl) {
+                padding-left: 4.5em;
+            }
+        }
+
+        .ql-indent-2 {
+            &.ql-direction-rtl.ql-align-right {
+                padding-right: 6em;
+            }
+
+            &:not(.ql-direction-rtl) {
+                padding-left: 6em;
+            }
+        }
+
+        li.ql-indent-2 {
+            &.ql-direction-rtl.ql-align-right {
+                padding-right: 7.5em;
+            }
+
+            &:not(.ql-direction-rtl) {
+                padding-left: 7.5em;
+            }
+        }
+
+        .ql-indent-3 {
+            &.ql-direction-rtl.ql-align-right {
+                padding-right: 9em;
+            }
+
+            &:not(.ql-direction-rtl) {
+                padding-left: 9em;
+            }
+        }
+
+        li.ql-indent-3 {
+            &.ql-direction-rtl.ql-align-right {
+                padding-right: 10.5em;
+            }
+
+            &:not(.ql-direction-rtl) {
+                padding-left: 10.5em;
+            }
+        }
+
+        .ql-indent-4 {
+            &.ql-direction-rtl.ql-align-right {
+                padding-right: 12em;
+            }
+
+            &:not(.ql-direction-rtl) {
+                padding-left: 12em;
+            }
+        }
+
+        li.ql-indent-4 {
+            &.ql-direction-rtl.ql-align-right {
+                padding-right: 13.5em;
+            }
+
+            &:not(.ql-direction-rtl) {
+                padding-left: 13.5em;
+            }
+        }
+
+        .ql-indent-5 {
+            &.ql-direction-rtl.ql-align-right {
+                padding-right: 15em;
+            }
+
+            &:not(.ql-direction-rtl) {
+                padding-left: 15em;
+            }
+        }
+
+        li.ql-indent-5 {
+            &.ql-direction-rtl.ql-align-right {
+                padding-right: 16.5em;
+            }
+
+            &:not(.ql-direction-rtl) {
+                padding-left: 16.5em;
+            }
+        }
+
+        .ql-indent-6 {
+            &.ql-direction-rtl.ql-align-right {
+                padding-right: 18em;
+            }
+
+            &:not(.ql-direction-rtl) {
+                padding-left: 18em;
+            }
+        }
+
+        li.ql-indent-6 {
+            &.ql-direction-rtl.ql-align-right {
+                padding-right: 19.5em;
+            }
+
+            &:not(.ql-direction-rtl) {
+                padding-left: 19.5em;
+            }
+        }
+
+        .ql-indent-7 {
+            &.ql-direction-rtl.ql-align-right {
+                padding-right: 21em;
+            }
+
+            &:not(.ql-direction-rtl) {
+                padding-left: 21em;
+            }
+        }
+
+        li.ql-indent-7 {
+            &.ql-direction-rtl.ql-align-right {
+                padding-right: 22.5em;
+            }
+
+            &:not(.ql-direction-rtl) {
+                padding-left: 22.5em;
+            }
+        }
+
+        .ql-indent-8 {
+            &.ql-direction-rtl.ql-align-right {
+                padding-right: 24em;
+            }
+
+            &:not(.ql-direction-rtl) {
+                padding-left: 24em;
+            }
+        }
+
+        li.ql-indent-8 {
+            &.ql-direction-rtl.ql-align-right {
+                padding-right: 25.5em;
+            }
+
+            &:not(.ql-direction-rtl) {
+                padding-left: 25.5em;
+            }
+        }
+
+        .ql-indent-9 {
+            &.ql-direction-rtl.ql-align-right {
+                padding-right: 27em;
+            }
+
+            &:not(.ql-direction-rtl) {
+                padding-left: 27em;
+            }
+        }
+
+        li.ql-indent-9 {
+            &.ql-direction-rtl.ql-align-right {
+                padding-right: 28.5em;
+            }
+
+            &:not(.ql-direction-rtl) {
+                padding-left: 28.5em;
+            }
+        }
+    }
+}

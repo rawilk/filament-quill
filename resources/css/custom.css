@@ -1,0 +1,32 @@
+.ql-snow .ql-picker.ql-placeholders .ql-picker-label::before,
+.ql-snow .ql-picker.ql-custom .ql-picker-label::before,
+.ql-snow .ql-button.ql-custom::before {
+    content: var(--ql-button-label);
+}
+
+.ql-snow .ql-button.ql-custom {
+    font-size: 14px;
+    font-weight: 500;
+    width: auto;
+}
+
+.ql-snow .ql-button.ql-custom::before {
+    @apply inline-block;
+    line-height: 10px;
+}
+
+.ql-snow .ql-picker.ql-custom:not(.ql-not-selectable) .ql-picker-label[data-label]:not([data-value=''])::before {
+    content: attr(data-label);
+}
+
+.ql-snow .ql-picker.ql-placeholders .ql-picker-item[data-value]:not([data-value=''])::before {
+    content: attr(data-value);
+}
+
+.ql-snow .ql-picker.ql-custom .ql-picker-item[data-label]::before {
+    content: attr(data-label);
+}
+
+.ql-snow .ql-picker.ql-placeholders .ql-picker-item:not([data-value]) {
+    @apply hidden;
+}
