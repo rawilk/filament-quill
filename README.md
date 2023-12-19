@@ -6,9 +6,11 @@
 [![PHP from Packagist](https://img.shields.io/packagist/php-v/rawilk/filament-quill?style=flat-square)](https://packagist.org/packages/rawilk/filament-quill)
 [![License](https://img.shields.io/github/license/rawilk/filament-quill?style=flat-square)](https://github.com/rawilk/filament-quill/blob/main/LICENSE.md)
 
+![social image](https://github.com/rawilk/filament-quill/blob/main/art/social-image.png?raw=true)
+
 ##
 
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+`filament-quill` offers a [Quill](https://quilljs.com) rich text editor integration for filament admin panels and forms.
 
 ## Installation
 
@@ -16,13 +18,6 @@ You can install the package via composer:
 
 ```bash
 composer require rawilk/filament-quill
-```
-
-You can publish and run the migrations with:
-
-```bash
-php artisan vendor:publish --tag="filament-quill-migrations"
-php artisan migrate
 ```
 
 You can publish the config file with:
@@ -33,12 +28,28 @@ php artisan vendor:publish --tag="filament-quill-config"
 
 You can view the default configuration here: https://github.com/rawilk/filament-quill/blob/main/config/filament-quill.php
 
+If you need to, you can publish the views and translations with:
+
+```bash
+php artisan vendor:publish --tag="filament-quill-views"
+php artisan vendor:publish --tag="filament-quill-translatinos"
+```
+
 ## Usage
 
+The editor has been set up to behave like and have a similar api to the rich text editor component provided by Filament. One major difference between Filament's editor and the package's editor is Filament is using Trix for the editor, while this package is using Quill.
+
+Here's a quick example of how to use the editor in a filament form:
+
 ```php
-$filament-quill = new Rawilk\Quill;
-echo $filament-quill->echoPhrase('Hello, Rawilk!');
+use Rawilk\FilamentQuill\Filament\Forms\Components\QuillEditor;
+
+QuillEditor::make('content'),
 ```
+
+This will provide an editor that will look like this in your form:
+
+![basic example](https://github.com/rawilk/filament-quill/blob/main/art/basic.png?raw=true)
 
 ## Scripts
 
@@ -80,6 +91,12 @@ Please review [my security policy](.github/SECURITY.md) on how to report securit
 
 -   [Randall Wilk](https://github.com/rawilk)
 -   [All Contributors](../../contributors)
+
+## Alternatives
+
+- [Filament's Rich Editor](https://filamentphp.com/docs/3.x/forms/fields/rich-editor)
+- [Filament Tiptap Editor](https://github.com/awcodes/filament-tiptap-editor)
+- [Filament Forms TinyEditor](https://github.com/mohamedsabil83/filament-forms-tinyeditor)
 
 ## License
 
