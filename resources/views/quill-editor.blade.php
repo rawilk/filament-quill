@@ -13,6 +13,11 @@
     $onInitCallback = $getOnInitCallback();
     $hasHistory = $hasToolbarButton([\Rawilk\FilamentQuill\Enums\ToolbarButton::Undo, \Rawilk\FilamentQuill\Enums\ToolbarButton::Redo]);
 
+    // To make our `prefer-lowest` tests pass, we're checking if the panel has `spa` mode enabled
+    // here like this instead, since some earlier versions of filament 3.0 don't appear
+    // to have this method defined.
+    $hasSpaMode = rescue(fn () => FilamentView::hasSpaMode(), fn () => false);
+
     $fontSizeStyle = filled($fontSizes)
         ? [
             '--ql-default-size: ' . $defaultFontSize,
@@ -48,7 +53,7 @@
                 "
             >
                 <div
-                    @if (FilamentView::hasSpaMode())
+                    @if ($hasSpaMode)
                         ax-load="visible"
                     @else
                         ax-load
