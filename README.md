@@ -35,6 +35,8 @@ php artisan vendor:publish --tag="filament-quill-views"
 php artisan vendor:publish --tag="filament-quill-translatinos"
 ```
 
+For more information on setup necessary to render editor content, see the [Rendering Content](#rendering-content) section.
+
 ## Usage
 
 The editor has been set up to behave like and have a similar api to the rich text editor component provided by Filament. One major difference between Filament's editor and the package's editor is Filament is using Trix for the editor, while this package is using Quill.
@@ -224,11 +226,12 @@ QuillEditor::make('content')
         '@quill-image-uploaded' => <<<'JS'
         ({ detail: { url, statePath } }) => {
             // handle the upload here.
+            // console.log(url);
         }
         JS,
         '@quill-images-deleted' => <<<'JS'
         ({ detail: { urls, statePath } }) => {
-            // handle the upload here.
+            // handle the event here.
         }
         JS,
     ])
@@ -237,6 +240,198 @@ QuillEditor::make('content')
 You could alternatively provide a callback to the `saveUploadedFileAttachmentsUsing()` method on the editor to help you track the files, however that route may require more work on your end.
 
 **Note:** You may want to delay deleting the images from the server when listening to the `quill-images-deleted` event until the user triggers a save, and/or you reset the [history](#history) state of the editor.
+
+## Rendering Content
+
+To match the formatting you will see in the editor, you should wrap your user-generated content inside a container with the `quill-content prose max-w-none` classes on it. You will also need to make sure you have the styles for the content area from this package loaded as well. We've extracted those styles into a separate stylesheet, called `content.css`. Depending on how you're rendering the content, you may find it easier to bundle the `content.css` styles in with your theme's stylesheet. If you haven't set up a custom theme and are using a panel, you should follow the [Filament docs](https://filamentphp.com/docs/3.x/panels/themes#creating-a-custom-theme) first on how to do that.
+
+The following will apply in both a panel and standalone as well.
+
+1. In your stylesheet, import the content styles:
+
+```css
+@import '<path-to-vendor>/rawilk/filament-quill/resources/css/content.css';
+
+/*
+ * Alternatively, you may import the entire stylesheet, however that's not recommended
+ * since Quill's editor styles are quite expensive, and we load the stylesheet necessary
+ * for the editor automatically for you.
+ */
+/* @import '<path-to-vendor>/rawilk/filament-quill/resources/css/app.css'; */
+```
+
+2. Add the package's views to your `tailwind.config.js` file.
+
+```js
+content: [
+    // ...
+    '<path-to-vendor>/rawilk/filament-quill/resources/**/*.blade.php',
+],
+
+// In some cases, it is necessary to safelist the root element selector so tailwind
+// doesn't purge everything.
+safelist: [
+    'quill-content',
+],
+```
+
+3. Add the `tawilwindcss/nesting` plugin to your `postcss.config.js` file.
+
+```js
+module.exports = {
+    plugins: {
+        'tailwindcss/nesting': {},
+        tailwindcss: {},
+        autoprefixer: {},
+    },
+};
+```
+
+4. Rebuild your custom theme.
+
+```bash
+npm run build
+```
+
+5. Render the content
+
+```html
+@use(Illuminate\Support\HtmlString)
+
+<div 
+    class="quill-content prose max-w-none"
+    @style([
+        // Adjust or omit as necessary depending on your default
+        // font size for editor content.
+        '--ql-default-size: 14px',
+    ])
+>
+    {{ new HtmlString($yourContent) }}
+</div>
+```
+
+You can also add `dark:prose-invert` to your container if you're supporting dark mode for the content rendering.
+
+It's also generally a good idea to run your content through a html purifier, however that is outside the scope of these docs.
+
+### Custom Fonts
+
+If you have the `ToolbarButton::Font` button enabled, we will render a dropdown allowing the user to format their content with `Sans Serif`, `Serif`, or `Monospaced` font families. You will need to pull in and register those font families manually, however. In a panel, you could take advantage of the `panels::head.start` [Render Hook](https://filamentphp.com/docs/3.x/support/render-hooks) to accomplish this.
+
+In the code below, we're going to pull in `Fira Code` and `PT Serif` monospace and serif fonts to use, however the process is similar to custom fonts as well.
+
+```html
+<link href="https://fonts.bunny.net/css?family=fira-code:300,400,500,600,700|pt-serif:400,400i,700,700i&display=swap" rel="stylesheet">
+
+<style>
+    :root {
+        --font-serif-family: 'PT Serif';
+        --font-mono-family: 'Fira Code';
+    }
+</style>
+```
+
+#### Registering the font families
+
+In the package's stylesheet, we configure monospace and serif font families to look for the `--font-serif-family` and `--font-mono-family` css variables in the editor area, however when rendering your own content independently, you'll need to configure your fonts in your theme's `tailwind.config.js` file.
+
+```js
+import defaultTheme from 'tailwindcss/defaultTheme';
+
+export default {
+    // ...
+    theme: {
+        extend: {
+            fontFamily: {
+                serif: ['var(--font-serif-family)', ...defaultTheme.fontFamily.serif],
+                mono: ['var(--font-mono-family)', ...defaultTheme.fontFamily.mono],
+            },
+        },
+    },
+}
+```
+
+#### Using custom font families
+
+If you want to use custom font families, like "Times New Roman", or something like that, you can use the `useFonts()` method on the component:
+
+> Be sure to follow the [Rendering Content](#rendering-content) section first to make sure you have everything setup for this.
+
+```php
+use Rawilk\FilamentQuill\Filament\Forms\Components\QuillEditor;
+
+QuillEditor::make('content')
+    ->useFonts([
+        'Times New Roman',
+    ])
+```
+
+Based on the [registering the font families](#registering-the-font-families) section, you will need to register the font in your tailwind config. We will map each font family value to a slug, so the "Times New Roman" font above will be mapped to "times-new-roman".
+
+```js
+fontFamily: {
+    times: ['Times New Roman'],
+}
+```
+
+In a custom stylesheet, you will need to target the areas of the content that are formatted with this font:
+
+```css
+.quill-content {
+    &, .ql-editor {
+        .ql-times-new-roman,
+        .ql-editor .ql-times-new-roman {
+            @apply font-times;
+        }
+    }
+}
+```
+
+Be sure to replace `.ql-times-new-roman` and `font-times` with your actual font names.
+
+### Custom font sizes
+
+When the `ToolbarButton::Size` button is enabled, we will show a dropdown of font sizes the user can use to format their content with. Like with the [font families](#custom-fonts), you are free to define your own sizes. You can pass an array of font sizes to the `fontSizes` method:
+
+```php
+use Rawilk\FilamentQuill\Filament\Forms\Components\QuillEditor;
+
+QuillEditor::make('content')
+    ->fontSizes([
+        '10px',
+        '12px',
+        '14px',
+        '20px',
+    ])
+```
+
+When you provide actual CSS size units, Quill will inline the text size right on the content, so no additional styling will be required. However, if you provide non-standard sizes, like "Small" or "Large", you will need to target those selectors in your css. The selectors follow a scheme of: `ql-size-{size}`.
+
+```css
+.ql-size-small,
+.ql-editor .ql-size-small {
+    font-size: .75rem;
+}
+```
+
+### Custom colors
+
+When you have the `ToolbarButton::TextColor` and `ToolbarButton::BackgroundColor` buttons enabled, you are free to specify your own color pallet using css hex color codes.
+
+```php
+use Rawilk\FilamentQuill\Filament\Forms\Components\QuillEditor;
+
+$colors = [
+    '#fff',
+    '#ff0000',
+    '#333',
+    // ...
+];
+
+QuillEditor::make('content')
+    ->textColors($colors)
+    ->backgroundColors($colors)
+```
 
 ## History
 
@@ -260,6 +455,46 @@ Behind the scenes, the editor component will dispatch the `quill-history-clear` 
 ```php
 $this->dispatch('quill-history-clear', id: 'data.content');
 ```
+
+## Other Callbacks
+
+### onInit
+
+Using the `onInit` callback, you are able to register additional handlers or callbacks on the quill editor instance, and more. This can be a great place to register your own [Event](https://quilljs.com/docs/api/#events) handlers on the editor instance. All you need to do is provide a JavaScript callback to the `onInit()` method:
+
+```php
+use Rawilk\FilamentQuill\Filament\Forms\Components\QuillEditor;
+
+QuillEditor::make('content')
+    ->onInit(<<<'JS'
+    function (quill, alpineInstance) {
+        // quill.on('selection-change', function (range, oldRange, source) {
+            // do stuff
+        // )};
+    }
+    JS)
+```
+
+Our JavaScript will pass your callback an instance of the quill editor, as well as the alpine component instance.
+
+### Text Changed
+
+If you just want to hook into the `text-changed` event that is dispatched from quill, you can use the `onTextChange` method:
+
+```php
+use Rawilk\FilamentQuill\Filament\Forms\Components\QuillEditor;
+
+QuillEditor::make('content')
+    ->onTextChange(<<<'JS'
+    function (delta, oldDelta, source, alpineInstance) {
+        // handle it
+    },
+    JS)
+```
+
+Note that we're using a regular function here, and not an arrow function. This is so you can use `this.quill` for the editor instance.
+
+In addition to the normal arguments that Quill provides, we also provide your callback an instance of the alpine component if you need it. You can prevent any processing of this event by our JavaScript if you return `false` from your callback.
 
 ## Scripts
 
