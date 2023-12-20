@@ -250,7 +250,7 @@ The following will apply in both a panel and standalone as well.
 1. In your stylesheet, import the content styles:
 
 ```css
-@import '<path-to-vendor>/rawilk/filament-quill/resources/css/content.css';
+@import "<path-to-vendor>/rawilk/filament-quill/resources/css/content.css";
 
 /*
  * Alternatively, you may import the entire stylesheet, however that's not recommended
@@ -280,7 +280,7 @@ safelist: [
 ```js
 module.exports = {
     plugins: {
-        'tailwindcss/nesting': {},
+        "tailwindcss/nesting": {},
         tailwindcss: {},
         autoprefixer: {},
     },
@@ -298,7 +298,7 @@ npm run build
 ```html
 @use(Illuminate\Support\HtmlString)
 
-<div 
+<div
     class="quill-content prose max-w-none"
     @style([
         // Adjust or omit as necessary depending on your default
@@ -321,12 +321,15 @@ If you have the `ToolbarButton::Font` button enabled, we will render a dropdown 
 In the code below, we're going to pull in `Fira Code` and `PT Serif` monospace and serif fonts to use, however the process is similar to custom fonts as well.
 
 ```html
-<link href="https://fonts.bunny.net/css?family=fira-code:300,400,500,600,700|pt-serif:400,400i,700,700i&display=swap" rel="stylesheet">
+<link
+    href="https://fonts.bunny.net/css?family=fira-code:300,400,500,600,700|pt-serif:400,400i,700,700i&display=swap"
+    rel="stylesheet"
+/>
 
 <style>
     :root {
-        --font-serif-family: 'PT Serif';
-        --font-mono-family: 'Fira Code';
+        --font-serif-family: "PT Serif";
+        --font-mono-family: "Fira Code";
     }
 </style>
 ```
@@ -336,19 +339,25 @@ In the code below, we're going to pull in `Fira Code` and `PT Serif` monospace a
 In the package's stylesheet, we configure monospace and serif font families to look for the `--font-serif-family` and `--font-mono-family` css variables in the editor area, however when rendering your own content independently, you'll need to configure your fonts in your theme's `tailwind.config.js` file.
 
 ```js
-import defaultTheme from 'tailwindcss/defaultTheme';
+import defaultTheme from "tailwindcss/defaultTheme";
 
 export default {
     // ...
     theme: {
         extend: {
             fontFamily: {
-                serif: ['var(--font-serif-family)', ...defaultTheme.fontFamily.serif],
-                mono: ['var(--font-mono-family)', ...defaultTheme.fontFamily.mono],
+                serif: [
+                    "var(--font-serif-family)",
+                    ...defaultTheme.fontFamily.serif,
+                ],
+                mono: [
+                    "var(--font-mono-family)",
+                    ...defaultTheme.fontFamily.mono,
+                ],
             },
         },
     },
-}
+};
 ```
 
 #### Using custom font families
@@ -378,7 +387,8 @@ In a custom stylesheet, you will need to target the areas of the content that ar
 
 ```css
 .quill-content {
-    &, .ql-editor {
+    &,
+    .ql-editor {
         .ql-times-new-roman,
         .ql-editor .ql-times-new-roman {
             @apply font-times;
@@ -410,7 +420,7 @@ When you provide actual CSS size units, Quill will inline the text size right on
 ```css
 .ql-size-small,
 .ql-editor .ql-size-small {
-    font-size: .75rem;
+    font-size: 0.75rem;
 }
 ```
 
