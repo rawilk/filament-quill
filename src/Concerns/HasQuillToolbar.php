@@ -6,6 +6,7 @@ namespace Rawilk\FilamentQuill\Concerns;
 
 use Closure;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 /**
  * @mixin \Filament\Forms\Components\Field
@@ -97,10 +98,7 @@ trait HasQuillToolbar
 
     public function mapFontName(string $font): string
     {
-        return str($font)
-            ->lower()
-            ->replace(' ', '-')
-            ->toString();
+        return Str::slug($font);
     }
 
     public function getHandlers(): array
