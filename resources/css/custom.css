@@ -30,3 +30,16 @@
 .ql-snow .ql-picker.ql-placeholders .ql-picker-item:not([data-value]) {
     @apply hidden;
 }
+
+.ql-snow.ql-toolbar {
+    @apply bg-white
+    dark:bg-white/5
+    rounded-t-lg;
+
+    &.sticky {
+        @apply z-[100]
+        rounded-t-none
+        shadow-md;
+        top: var(--sticky-offset, theme('spacing.12'));
+    }
+}

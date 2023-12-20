@@ -37,6 +37,8 @@ class QuillEditor extends Field implements CanBeLengthConstrained, HasFileAttach
 
     protected ?array $cachedToolbarButtons = null;
 
+    protected bool|Closure|null $stickyToolbar = true;
+
     // Default toolbar
     protected array|Closure $toolbarButtons = [
         ToolbarButton::Font,
@@ -77,6 +79,13 @@ class QuillEditor extends Field implements CanBeLengthConstrained, HasFileAttach
     public function shouldLoadStyles(): bool
     {
         return $this->shouldLoadStyles ?? config('filament-quill.load_styles', true);
+    }
+
+    public function stickyToolbar(bool|Closure|null $condition = true): static
+    {
+        $this->stickyToolbar = $condition;
+
+        return $this;
     }
 
     public function getMinHeight(): ?string
@@ -135,5 +144,10 @@ class QuillEditor extends Field implements CanBeLengthConstrained, HasFileAttach
         $buttonValue = is_string($button) ? $button : $button->value;
 
         return in_array($buttonValue, $this->getToolbarButtons(), true);
+    }
+
+    public function hasStickyToolbar(): bool
+    {
+        return $this->evaluate($this->stickyToolbar) === true;
     }
 }

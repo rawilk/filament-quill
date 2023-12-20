@@ -7,6 +7,7 @@ import {
     getLabel,
     isFunction,
     getImageUrls,
+    stickyObserver,
 } from './utils.js';
 import ImageUploader from './custom-handlers/image-uploader';
 import InsertBr from './custom-handlers/insert-br';
@@ -27,6 +28,7 @@ export default function quill({
     hasHistory = false,
     onTextChangedHandler = undefined,
     onInit = undefined,
+    stickyToolbar = false,
 }) {
     return {
         state,
@@ -39,8 +41,10 @@ export default function quill({
         hasHistory,
         onTextChangedHandler,
         onInit,
+        stickyToolbar,
         editorInstance: undefined,
         labelClickHandler: undefined,
+        stickyObserverInstance: undefined,
 
         init() {
             // Setting a small timeout so the icons aren't flashing as huge elements
@@ -62,6 +66,14 @@ export default function quill({
             this.labelClickHandler = () => this.focus();
 
             getLabel(this.statePath)?.addEventListener('click', this.labelClickHandler);
+
+            if (this.stickyToolbar) {
+                this.stickyObserverInstance = stickyObserver(
+                    this.$refs.stickyToolbar,
+                    this.$refs.toolbar,
+                    '.fi-topbar.sticky',
+                );
+            }
         },
 
         destroy() {
@@ -69,6 +81,10 @@ export default function quill({
             getLabel(this.statePath)?.removeEventListener('click', this.labelClickHandler);
 
             this.editorInstance = this.$root._editor = undefined;
+
+            if (this.stickyObserverInstance) {
+                this.stickyObserverInstance.disconnect();
+            }
         },
 
         initEditor(content) {
@@ -81,6 +97,7 @@ export default function quill({
 
             _this.$root._editor = _this.editorInstance = new Quill(_this.$refs.quill, {
                 theme: _this.options.theme,
+                scrollingContainer: 'html',
                 placeholder: _this.placeholder,
                 modules: _this.getModules(),
             });

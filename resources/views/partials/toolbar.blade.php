@@ -6,6 +6,14 @@
     $placeholders = $getPlaceholders();
 @endphp
 
+@if ($hasStickyToolbar)
+    {{--
+        To prevent the "sticky" class being added/removed rapidly with the intersection
+        observer, we're going to attach the observer to a dummy element instead.
+    --}}
+    <div x-ref="stickyToolbar" class="w-0 h-0" wire:ignore></div>
+@endif
+
 <div
     id="quill-toolbar-{{ $id }}"
     x-ref="toolbar"

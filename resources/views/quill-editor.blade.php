@@ -12,6 +12,7 @@
     $textChangeHandler = $getOnTextChangeHandler();
     $onInitCallback = $getOnInitCallback();
     $hasHistory = $hasToolbarButton([\Rawilk\FilamentQuill\Enums\ToolbarButton::Undo, \Rawilk\FilamentQuill\Enums\ToolbarButton::Redo]);
+    $hasStickyToolbar = $hasStickyToolbar();
 
     // To make our `prefer-lowest` tests pass, we're checking if the panel has `spa` mode enabled
     // here like this instead, since some earlier versions of filament 3.0 don't appear
@@ -78,6 +79,7 @@
                         wireId: @js($this->getId()),
                         allowImages: @js($hasToolbarButton(\Rawilk\FilamentQuill\Enums\ToolbarButton::Image)),
                         hasHistory: @js($hasHistory),
+                        stickyToolbar: @js($hasStickyToolbar),
                     })"
                     @if ($hasHistory)
                         x-on:quill-history-clear.window="clearHistory"

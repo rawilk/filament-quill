@@ -31,3 +31,28 @@ export const getStyle = editorId => document.head.querySelector(`style#quill--${
 export const getLabel = editorId => document.querySelector(`label[for="${editorId}"]`);
 
 export const getImageUrls = delta => delta.ops.filter(op => op.insert && op.insert.image).map(op => op.insert.image);
+
+export const stickyObserver = (anchor, el, topbarSelector) => {
+    if (! anchor) {
+        return;
+    }
+
+    const topbar = document.querySelector(topbarSelector);
+    const offsetHeight = topbar?.offsetHeight ?? 0;
+
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                el?.classList.remove('sticky');
+                el?.style.removeProperty('--sticky-offset');
+            } else {
+                el?.classList.add('sticky');
+                el?.style.setProperty('--sticky-offset', `${offsetHeight + 2}px`);
+            }
+        }, { threshold: .25, rootMargin: `${offsetHeight}px` });
+    });
+
+    observer.observe(anchor);
+
+    return observer;
+};
