@@ -9,8 +9,10 @@ import {
     getImageUrls,
 } from './utils.js';
 import ImageUploader from './custom-handlers/image-uploader';
+import InsertBr from './custom-handlers/insert-br';
 
 Quill.register('modules/imageUploader', ImageUploader);
+Quill.register('modules/insertBr', InsertBr);
 
 window.Quill = Quill;
 
@@ -77,7 +79,7 @@ export default function quill({
 
             _this.addStylesToDom(fontStyles + sizeStyles);
 
-            this.$root._editor = _this.editorInstance = new Quill(_this.$refs.quill, {
+            _this.$root._editor = _this.editorInstance = new Quill(_this.$refs.quill, {
                 theme: _this.options.theme,
                 placeholder: _this.placeholder,
                 modules: _this.getModules(),
@@ -212,6 +214,8 @@ export default function quill({
                         });
                     }
                 },
+
+                insertBr: {},
             };
 
             if (_this.hasHistory) {

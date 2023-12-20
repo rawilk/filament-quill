@@ -1,4 +1,5 @@
 import LoadingImage from '../blots/image';
+import { isFunction } from '../utils.js';
 
 class ImageUploader {
     constructor(quill, options) {
@@ -8,7 +9,7 @@ class ImageUploader {
         this.placeholderDelta = null;
         this.allowImages = options.allowImages;
 
-        if (typeof this.options.upload !== 'function') {
+        if (! isFunction(this.options.upload)) {
             console.warn('[Missing config] upload function that returns a promise is required');
         }
 
