@@ -211,3 +211,11 @@
     text-gray-400
     dark:text-gray-500;
 }
+
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value=serif]:before {
+    @apply font-serif;
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value=monospace]:before {
+    @apply font-mono;
+}
