@@ -17,6 +17,7 @@
 /phpstan.neon.dist     export-ignore
 /phpunit.xml.dist      export-ignore
 /pint.json             export-ignore
+/postcss.config.cjs    export-ignore
 /psalm.xml.dist        export-ignore
 /tailwind.config.js    export-ignore
 /testbench.yaml        export-ignore
