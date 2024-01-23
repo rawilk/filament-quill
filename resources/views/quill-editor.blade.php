@@ -35,7 +35,11 @@
             ...$fontSizeStyle,
         ])
         x-data
-        @includeWhen($shouldLoadStyles(), 'filament-quill::partials.load-css')
+
+        @if ($shouldLoadStyles())
+            x-load-css="[@js(FilamentAsset::getStyleHref('quill', package: FilamentQuillServiceProvider::PACKAGE_ID))]"
+            data-css-before="filament"
+        @endif
     >
         @if ($isDisabled)
             <div
