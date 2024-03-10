@@ -2,6 +2,20 @@
 
 All notable changes to `filament-quill` will be documented in this file
 
+## v1.0.3 - 2024-03-10
+
+### What's Changed
+
+* NPM: Bump esbuild from 0.19.11 to 0.20.0 by @dependabot in https://github.com/rawilk/filament-quill/pull/14
+* NPM: Bump postcss from 8.4.33 to 8.4.34 by @dependabot in https://github.com/rawilk/filament-quill/pull/15
+* NPM: Bump postcss from 8.4.34 to 8.4.35 by @dependabot in https://github.com/rawilk/filament-quill/pull/16
+* NPM: Bump esbuild from 0.20.0 to 0.20.1 by @dependabot in https://github.com/rawilk/filament-quill/pull/17
+* NPM: Bump postcss-import from 16.0.0 to 16.0.1 by @dependabot in https://github.com/rawilk/filament-quill/pull/18
+* NPM: Bump autoprefixer from 10.4.17 to 10.4.18 by @dependabot in https://github.com/rawilk/filament-quill/pull/19
+* Add laravel 11.x support by @rawilk in https://github.com/rawilk/filament-quill/pull/20
+
+**Full Changelog**: https://github.com/rawilk/filament-quill/compare/v1.0.2...v1.0.3
+
 ## v1.0.2 - 2024-01-23
 
 ### What's Changed
