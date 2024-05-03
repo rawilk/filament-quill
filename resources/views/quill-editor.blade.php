@@ -6,9 +6,11 @@
     $id = $getId();
     $statePath = $getStatePath();
     $isDisabled = $isDisabled();
+    $headers = $getHeaders();
     $fonts = $getFonts();
     $fontSizes = $getFontSizes();
     $defaultFontSize = $getDefaultFontSize();
+    $defaultHeaderSize = $getDefaultHeaderSize();
     $textChangeHandler = $getOnTextChangeHandler();
     $onInitCallback = $getOnInitCallback();
     $hasHistory = $hasToolbarButton([\Rawilk\FilamentQuill\Enums\ToolbarButton::Undo, \Rawilk\FilamentQuill\Enums\ToolbarButton::Redo]);
