@@ -26,4 +26,5 @@ enum ToolbarButton: string
     case Undo = 'undo';
     case Redo = 'redo';
     case ClearFormat = 'clean';
+    case Header = 'header';
 }

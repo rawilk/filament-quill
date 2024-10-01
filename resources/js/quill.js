@@ -11,9 +11,11 @@ import {
 } from './utils.js';
 import ImageUploader from './custom-handlers/image-uploader';
 import InsertBr from './custom-handlers/insert-br';
+import Header from "quill/formats/header.js";
 
 Quill.register('modules/imageUploader', ImageUploader);
 Quill.register('modules/insertBr', InsertBr);
+Quill.register('formats/header', Header);
 
 window.Quill = Quill;
 

@@ -242,4 +242,12 @@
             @endif
         </x-filament-quill::toolbar-group>
     @endforeach
+
+    @if ($hasToolbarButton(ToolbarButton::Header))
+        <select class="ql-header" title="{{ __('filament-quill::quill.toolbar.header') }}">
+            @foreach ($headers as $header)
+                <option value="{{ $header }}" data-label="{{ $header }}" @selected($header === $defaultHeaderSize)></option>
+            @endforeach
+        </select>
+    @endif
 </div>
