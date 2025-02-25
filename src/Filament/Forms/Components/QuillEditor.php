@@ -60,6 +60,7 @@ class QuillEditor extends Field implements CanBeLengthConstrained, HasFileAttach
         ToolbarButton::Undo,
         ToolbarButton::Redo,
         ToolbarButton::ClearFormat,
+        ToolbarButton::Header,
     ];
 
     public function loadStyles(?bool $condition = true): static
