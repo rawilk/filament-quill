@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Rawilk\FilamentQuill\Tests\Fixtures\Database\Factories;
 
-use Awcodes\HtmlFaker\HtmlFaker;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Rawilk\FilamentQuill\Tests\Fixtures\Models\Page;
 
@@ -14,14 +13,25 @@ final class PageFactory extends Factory
 
     public function definition(): array
     {
-        $content = HtmlFaker::make()
-            ->heading()
-            ->paragraphs(withRandomLinks: true)
-            ->generate();
-
         return [
             'title' => fake()->sentence(),
-            'content' => $content,
+            'content' => $this->generateContent(),
         ];
+    }
+
+    private function generateContent(): string
+    {
+        $heading = fake()->sentence();
+        $content = fake()->paragraph();
+        $linkText = fake()->words(4, asText: true);
+        $url = fake()->url();
+
+        return <<<HTML
+        <h2>{$heading}</h2>
+        <p>
+            {$content}
+            <a href="{$url}">{$linkText}</a>
+        </p>
+        HTML;
     }
 }
