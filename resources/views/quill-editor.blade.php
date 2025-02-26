@@ -67,7 +67,7 @@
                     @endif
                     ax-load-src="{{ FilamentAsset::getAlpineComponentSrc('quill', package: FilamentQuillServiceProvider::PACKAGE_ID) }}"
                     x-data="quill({
-                        state: $wire.{{ $applyStateBindingModifiers("entangle('{$statePath}')", isOptimisticallyLive: false) }},
+                        state: $wire.{{ $applyStateBindingModifiers("\$entangle('{$statePath}')", isOptimisticallyLive: false) }},
                         statePath: '{{ $statePath }}',
                         placeholder: @js($getPlaceholder()),
                         options: @js($getQuillOptions()),
