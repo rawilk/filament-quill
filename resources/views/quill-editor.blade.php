@@ -61,11 +61,11 @@
             >
                 <div
                     @if ($hasSpaMode)
-                        ax-load="visible"
+                        x-load="visible"
                     @else
-                        ax-load
+                        x-load
                     @endif
-                    ax-load-src="{{ FilamentAsset::getAlpineComponentSrc('quill', package: FilamentQuillServiceProvider::PACKAGE_ID) }}"
+                    x-load-src="{{ FilamentAsset::getAlpineComponentSrc('quill', package: FilamentQuillServiceProvider::PACKAGE_ID) }}"
                     x-data="quill({
                         state: $wire.{{ $applyStateBindingModifiers("\$entangle('{$statePath}')", isOptimisticallyLive: false) }},
                         statePath: '{{ $statePath }}',
