@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Rawilk\FilamentQuill\Concerns;
 
 use Closure;
+use Filament\Forms\Components\Field;
 
 /**
- * @mixin \Filament\Forms\Components\Field
- * @mixin \Rawilk\FilamentQuill\Concerns\HasQuillToolbar
+ * @mixin Field
+ * @mixin HasQuillToolbar
  */
 trait HasQuillOptions
 {
