@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Rawilk\FilamentQuill\Concerns;
 
 use Closure;
+use Filament\Forms\Components\Field;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 /**
- * @mixin \Filament\Forms\Components\Field
+ * @mixin Field
  */
 trait HasQuillToolbar
 {
