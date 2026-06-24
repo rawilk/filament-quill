@@ -12,9 +12,19 @@ import {
 import ImageUploader from './custom-handlers/image-uploader';
 import InsertBr from './custom-handlers/insert-br';
 import Header from "quill/formats/header.js";
+import BlotFormatterPkg from 'quill-blot-formatter';
+import './blots/resizable-image';
+
+// quill-blot-formatter is a CommonJS module. Depending on esbuild's interop the
+// default import can come through either as the BlotFormatter class itself or as
+// the module namespace object ({ default: BlotFormatter, ... }). Unwrap so we
+// always register the actual constructor — registering the namespace object makes
+// Quill throw "X is not a constructor" while building the editor.
+const BlotFormatter = BlotFormatterPkg?.default ?? BlotFormatterPkg;
 
 Quill.register('modules/imageUploader', ImageUploader);
 Quill.register('modules/insertBr', InsertBr);
+Quill.register('modules/blotFormatter', BlotFormatter);
 Quill.register('formats/header', Header);
 
 window.Quill = Quill;
@@ -47,6 +57,7 @@ export default function quill({
         editorInstance: undefined,
         labelClickHandler: undefined,
         stickyObserverInstance: undefined,
+        imageResizeObserver: undefined,
 
         init() {
             // Setting a small timeout so the icons aren't flashing as huge elements
@@ -59,6 +70,15 @@ export default function quill({
 
             this.$watch('state', () => {
                 if (this.$refs.quill.contains(document.activeElement)) {
+                    return;
+                }
+
+                // Ignore self-originated updates (e.g. the image-resize bridge below
+                // writing the editor's own HTML back into state). Re-converting here
+                // would rebuild the editor and detach the <img> currently being
+                // resized, collapsing the overlay and breaking the drag. Only genuine
+                // external/Livewire changes differ from the live editor HTML.
+                if (this.editorInstance && this.editorInstance.root.innerHTML === this.state) {
                     return;
                 }
 
@@ -86,6 +106,11 @@ export default function quill({
 
             if (this.stickyObserverInstance) {
                 this.stickyObserverInstance.disconnect();
+            }
+
+            if (this.imageResizeObserver) {
+                this.imageResizeObserver.disconnect();
+                this.imageResizeObserver = undefined;
             }
         },
 
@@ -122,6 +147,10 @@ export default function quill({
 
             const el = _this.$refs.quill.querySelector('.ql-editor');
             ['prose', 'max-w-none', 'dark:prose-invert'].forEach(className => el?.classList.add(className));
+
+            if (_this.options.allowImageResizing && el) {
+                _this.watchImageResizing(el);
+            }
 
             _this.setEditorValue(content, 'silent');
 
@@ -190,6 +219,29 @@ export default function quill({
             document.head.appendChild(el);
         },
 
+        watchImageResizing(editorRoot) {
+            // The blot-formatter module resizes/aligns images by mutating the <img>
+            // attributes directly (width/height/data-align), which does NOT trigger
+            // Quill's `text-change` event — so `state` would never update and the new
+            // size/alignment would never reach Livewire. Bridge those DOM mutations
+            // back into `state` so the change is saved.
+            this.imageResizeObserver = new MutationObserver(mutations => {
+                const touchedImage = mutations.some(
+                    mutation => mutation.target instanceof HTMLImageElement,
+                );
+
+                if (touchedImage) {
+                    this.state = this.editorInstance.root.innerHTML;
+                }
+            });
+
+            this.imageResizeObserver.observe(editorRoot, {
+                subtree: true,
+                attributes: true,
+                attributeFilter: ['width', 'height', 'data-align', 'style', 'class'],
+            });
+        },
+
         getModules() {
             let _this = this;
 
@@ -236,6 +288,24 @@ export default function quill({
 
                 insertBr: {},
             };
+
+            if (_this.options.allowImageResizing) {
+                modules.blotFormatter = {
+                    align: {
+                        // Persist alignment as a `data-align` attribute only; the visual
+                        // float/margin is driven from CSS so the saved HTML stays clean
+                        // and survives Quill's clipboard converter on reload.
+                        aligner: {
+                            applyStyle: false,
+                        },
+                        toolbar: {
+                            // Theme the selected state from CSS (.is-selected) instead of
+                            // letting the module apply its own inline highlight style.
+                            addButtonSelectStyle: false,
+                        },
+                    },
+                };
+            }
 
             if (_this.hasHistory) {
                 modules.history = {
