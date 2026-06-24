@@ -241,6 +241,21 @@ You could alternatively provide a callback to the `saveUploadedFileAttachmentsUs
 
 **Note:** You may want to delay deleting the images from the server when listening to the `quill-images-deleted` event until the user triggers a save, and/or you reset the [history](#history) state of the editor.
 
+## Image Resizing
+
+Images inside the editor can optionally be resized with drag handles and aligned (left, center, or right) using an overlay toolbar. This is disabled by default; enable it per-editor with the `allowImageResizing()` method:
+
+```php
+use Rawilk\FilamentQuill\Filament\Forms\Components\QuillEditor;
+
+QuillEditor::make('content')
+    ->allowImageResizing()
+```
+
+You may also enable it globally for every editor by setting `allow_image_resizing` to `true` in the published `config/filament-quill.php` file. The per-editor method always takes precedence over the config value, so you can opt a single editor out again with `->allowImageResizing(false)`.
+
+Resized dimensions are saved as `width` and `height` attributes on the `<img>` tag, and alignment is saved as a `data-align` attribute — no inline styles are added, so the stored HTML stays clean and the values are preserved when the content is loaded back into the editor. The alignment is rendered from the package's `content.css` styles, so make sure those styles are loaded both in the editor and wherever you [render the content](#rendering-content).
+
 ## Rendering Content
 
 To match the formatting you will see in the editor, you should wrap your user-generated content inside a container with the `quill-content prose max-w-none` classes on it. You will also need to make sure you have the styles for the content area from this package loaded as well. We've extracted those styles into a separate stylesheet, called `content.css`. Depending on how you're rendering the content, you may find it easier to bundle the `content.css` styles in with your theme's stylesheet. If you haven't set up a custom theme and are using a panel, you should follow the [Filament docs](https://filamentphp.com/docs/3.x/panels/themes#creating-a-custom-theme) first on how to do that.
