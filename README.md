@@ -559,14 +559,14 @@ Please review [my security policy](.github/SECURITY.md) on how to report securit
 
 ## Credits
 
--   [Randall Wilk](https://github.com/rawilk)
--   [All Contributors](../../contributors)
+- [Randall Wilk](https://github.com/rawilk)
+- [All Contributors](../../contributors)
 
 ## Alternatives
 
--   [Filament's Rich Editor](https://filamentphp.com/docs/3.x/forms/fields/rich-editor)
--   [Filament Tiptap Editor](https://github.com/awcodes/filament-tiptap-editor)
--   [Filament Forms TinyEditor](https://github.com/mohamedsabil83/filament-forms-tinyeditor)
+- [Filament's Rich Editor](https://filamentphp.com/docs/3.x/forms/fields/rich-editor)
+- [Filament Tiptap Editor](https://github.com/awcodes/filament-tiptap-editor)
+- [Filament Forms TinyEditor](https://github.com/mohamedsabil83/filament-forms-tinyeditor)
 
 ## License
 
