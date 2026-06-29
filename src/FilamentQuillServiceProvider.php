@@ -12,7 +12,7 @@ use Spatie\LaravelPackageTools\PackageServiceProvider;
 
 final class FilamentQuillServiceProvider extends PackageServiceProvider
 {
-    public const PACKAGE_ID = 'rawilk/filament-quill';
+    public const string PACKAGE_ID = 'rawilk/filament-quill';
 
     public function configurePackage(Package $package): void
     {
