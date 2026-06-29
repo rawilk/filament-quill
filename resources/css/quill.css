@@ -2,11 +2,11 @@
     --ql-primary: theme('colors.primary.600');
     --ql-dark-primary: theme('colors.primary.400');
     --ql-border: theme('colors.gray.100');
-    --ql-dark-border: theme('colors.white/.1');
+    --ql-dark-border: rgb(255 255 255 / 0.1);
     --ql-toolbar-button-color: theme('colors.gray.700');
     --ql-dark-toolbar-button-color: theme('colors.gray.200');
     --ql-toolbar-button-hover-bg: theme('colors.gray.100');
-    --ql-dark-toolbar-button-hover-bg: theme('colors.white/0.05');
+    --ql-dark-toolbar-button-hover-bg: rgb(255 255 255 / 0.05);
 }
 
 .ql-editor {
