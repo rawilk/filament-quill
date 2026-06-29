@@ -8,9 +8,13 @@
 
 ![social image](https://github.com/rawilk/filament-quill/blob/main/art/social-image.png?raw=true)
 
-##
-
 `filament-quill` offers a [Quill](https://quilljs.com) rich text editor integration for filament admin panels and forms.
+
+## Requirements
+
+- PHP 8.3 or higher
+- Laravel 12 or higher
+- Filament 5 (should work with Filament 4 too)
 
 ## Installation
 
@@ -32,14 +36,18 @@ If you need to, you can publish the views and translations with:
 
 ```bash
 php artisan vendor:publish --tag="filament-quill-views"
-php artisan vendor:publish --tag="filament-quill-translatinos"
+php artisan vendor:publish --tag="filament-quill-translations"
 ```
 
 For more information on setup necessary to render editor content, see the [Rendering Content](#rendering-content) section.
 
+## Upgrading
+
+Upgrading from a v1.x? See the [upgrade guide](UPGRADE.md).
+
 ## Usage
 
-The editor has been set up to behave like and have a similar api to the rich text editor component provided by Filament. One major difference between Filament's editor and the package's editor is Filament is using Trix for the editor, while this package is using Quill.
+The editor has been set up to behave like and have a similar api to the rich text editor component provided by Filament. One major difference between Filament's editor and the package's editor is Filament is using Tiptap for the editor, while this package is using Quill.
 
 Here's a quick example of how to use the editor in a filament form:
 
@@ -55,35 +63,33 @@ This will provide an editor that will look like this in your form:
 
 ## Toolbar Buttons
 
-You may set the toolbar buttons for the editor using the `toolbarButtons()` method. The options shown here are the defaults. Please consult the `ToolbarButton` enum for a full
-list of available toolbar buttons.
+The editor ships with a default toolbar. Please consult the `ToolbarButton` enum for a full list of available toolbar buttons. These are the defaults:
 
 ```php
-use Rawilk\FilamentQuill\Filament\Forms\Components\QuillEditor;
 use Rawilk\FilamentQuill\Enums\ToolbarButton;
 
-QuillEditor::make('content')
-    ->toolbarButtons([
-        ToolbarButton::Font,
-        ToolbarButton::Size,
-        ToolbarButton::Bold,
-        ToolbarButton::Italic,
-        ToolbarButton::Underline,
-        ToolbarButton::Strike,
-        ToolbarButton::BlockQuote,
-        ToolbarButton::OrderedList,
-        ToolbarButton::UnorderedList,
-        ToolbarButton::Indent,
-        ToolbarButton::Link,
-        ToolbarButton::Image,
-        ToolbarButton::Scripts,
-        ToolbarButton::TextAlign,
-        ToolbarButton::TextColor,
-        ToolbarButton::BackgroundColor,
-        ToolbarButton::Undo,
-        ToolbarButton::Redo,
-        ToolbarButton::ClearFormat,
-    ])
+[
+    ToolbarButton::Font,
+    ToolbarButton::Size,
+    ToolbarButton::Bold,
+    ToolbarButton::Italic,
+    ToolbarButton::Underline,
+    ToolbarButton::Strike,
+    ToolbarButton::BlockQuote,
+    ToolbarButton::OrderedList,
+    ToolbarButton::UnorderedList,
+    ToolbarButton::Indent,
+    ToolbarButton::Link,
+    ToolbarButton::Image,
+    ToolbarButton::Scripts,
+    ToolbarButton::TextAlign,
+    ToolbarButton::TextColor,
+    ToolbarButton::BackgroundColor,
+    ToolbarButton::Undo,
+    ToolbarButton::Redo,
+    ToolbarButton::ClearFormat,
+    ToolbarButton::Header,
+]
 ```
 
 You may alternatively use the `disableToolbarButtons()` method to disable specific buttons:
@@ -98,8 +104,6 @@ QuillEditor::make('content')
         ToolbarButton::Font,
     ])
 ```
-
-To completely disable all toolbar buttons, pass an empty array to `toolbarButtons([])`, or use the `disableAllToolbarButtons()` method.
 
 You can also enable specific toolbar buttons using the `enableToolbarButtons()` method:
 
@@ -258,7 +262,7 @@ Resized dimensions are saved as `width` and `height` attributes on the `<img>` t
 
 ## Rendering Content
 
-To match the formatting you will see in the editor, you should wrap your user-generated content inside a container with the `quill-content prose max-w-none` classes on it. You will also need to make sure you have the styles for the content area from this package loaded as well. We've extracted those styles into a separate stylesheet, called `content.css`. Depending on how you're rendering the content, you may find it easier to bundle the `content.css` styles in with your theme's stylesheet. If you haven't set up a custom theme and are using a panel, you should follow the [Filament docs](https://filamentphp.com/docs/3.x/panels/themes#creating-a-custom-theme) first on how to do that.
+To match the formatting you will see in the editor, you should wrap your user-generated content inside a container with the `quill-content prose max-w-none` classes on it. You will also need to make sure you have the styles for the content area from this package loaded as well. We've extracted those styles into a separate stylesheet, called `content.css`. Depending on how you're rendering the content, you may find it easier to bundle the `content.css` styles in with your theme's stylesheet. If you haven't set up a custom theme and are using a panel, you should follow the [Filament docs](https://filamentphp.com/docs/5.x/styling/overview) first on how to do that.
 
 The following will apply in both a panel and standalone as well.
 
@@ -275,28 +279,20 @@ The following will apply in both a panel and standalone as well.
 /* @import '<path-to-vendor>/rawilk/filament-quill/resources/css/app.css'; */
 ```
 
-2. Add the package's views to your `tailwind.config.js` file.
+2. Add the package's views as a source in the stylesheet for your custom theme.
 
-```js
-content: [
-    // ...
-    '<path-to-vendor>/rawilk/filament-quill/resources/**/*.blade.php',
-],
-
-// In some cases, it is necessary to safelist the root element selector so tailwind
-// doesn't purge everything.
-safelist: [
-    'quill-content',
-],
+```css
+@source "<path-to-vendor>/rawilk/filament-quill/resources/**/*.blade.php";
+@source inline("quill-content");
 ```
 
-3. Add the `tawilwindcss/nesting` plugin to your `postcss.config.js` file.
+3. Make sure your `postcss.config.js` file is compatible with Tailwind CSS 4.
 
 ```js
 module.exports = {
     plugins: {
-        "tailwindcss/nesting": {},
-        tailwindcss: {},
+        "postcss-import": {},
+        "@tailwindcss/postcss": {},
         autoprefixer: {},
     },
 };
@@ -331,7 +327,7 @@ It's also generally a good idea to run your content through a html purifier, how
 
 ### Custom Fonts
 
-If you have the `ToolbarButton::Font` button enabled, we will render a dropdown allowing the user to format their content with `Sans Serif`, `Serif`, or `Monospaced` font families. You will need to pull in and register those font families manually, however. In a panel, you could take advantage of the `panels::head.start` [Render Hook](https://filamentphp.com/docs/3.x/support/render-hooks) to accomplish this.
+If you have the `ToolbarButton::Font` button enabled, we will render a dropdown allowing the user to format their content with `Sans Serif`, `Serif`, or `Monospaced` font families. You will need to pull in and register those font families manually, however. In a panel, you could take advantage of the `panels::head.start` [Render Hook](https://filamentphp.com/docs/5.x/advanced/render-hooks) to accomplish this.
 
 In the code below, we're going to pull in `Fira Code` and `PT Serif` monospace and serif fonts to use, however the process is similar to custom fonts as well.
 
@@ -351,28 +347,13 @@ In the code below, we're going to pull in `Fira Code` and `PT Serif` monospace a
 
 #### Registering the font families
 
-In the package's stylesheet, we configure monospace and serif font families to look for the `--font-serif-family` and `--font-mono-family` css variables in the editor area, however when rendering your own content independently, you'll need to configure your fonts in your theme's `tailwind.config.js` file.
+In the package's stylesheet, we configure monospace and serif font families to look for the `--font-serif-family` and `--font-mono-family` css variables in the editor area. When rendering your own content independently, you can register those fonts in your theme stylesheet with Tailwind's CSS configuration syntax.
 
-```js
-import defaultTheme from "tailwindcss/defaultTheme";
-
-export default {
-    // ...
-    theme: {
-        extend: {
-            fontFamily: {
-                serif: [
-                    "var(--font-serif-family)",
-                    ...defaultTheme.fontFamily.serif,
-                ],
-                mono: [
-                    "var(--font-mono-family)",
-                    ...defaultTheme.fontFamily.mono,
-                ],
-            },
-        },
-    },
-};
+```css
+@theme {
+    --font-quill-serif: var(--font-serif-family), ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+    --font-quill-mono: var(--font-mono-family), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
 ```
 
 #### Using custom font families
@@ -390,11 +371,11 @@ QuillEditor::make('content')
     ])
 ```
 
-Based on the [registering the font families](#registering-the-font-families) section, you will need to register the font in your tailwind config. We will map each font family value to a slug, so the "Times New Roman" font above will be mapped to "times-new-roman".
+Based on the [registering the font families](#registering-the-font-families) section, you will need to register the font in your stylesheet. We will map each font family value to a slug, so the "Times New Roman" font above will be mapped to "times-new-roman".
 
-```js
-fontFamily: {
-    times: ['Times New Roman'],
+```css
+@theme {
+    --font-quill-times: "Times New Roman", Times, serif;
 }
 ```
 
@@ -406,13 +387,13 @@ In a custom stylesheet, you will need to target the areas of the content that ar
     .ql-editor {
         .ql-times-new-roman,
         .ql-editor .ql-times-new-roman {
-            @apply font-times;
+            @apply font-quill-times;
         }
     }
 }
 ```
 
-Be sure to replace `.ql-times-new-roman` and `font-times` with your actual font names.
+Be sure to replace `.ql-times-new-roman` and `font-quill-times` with your actual font names.
 
 ### Custom font sizes
 
@@ -545,6 +526,13 @@ composer format
 composer test
 ```
 
+The test suite includes Pest Browser coverage for the editor. When running the same split as CI, run regular tests in parallel and browser tests serially:
+
+```bash
+vendor/bin/pest --parallel --exclude-group=browser
+vendor/bin/pest --group=browser
+```
+
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
@@ -564,7 +552,7 @@ Please review [my security policy](.github/SECURITY.md) on how to report securit
 
 ## Alternatives
 
-- [Filament's Rich Editor](https://filamentphp.com/docs/3.x/forms/fields/rich-editor)
+- [Filament's Rich Editor](https://filamentphp.com/docs/5.x/forms/rich-editor)
 - [Filament Tiptap Editor](https://github.com/awcodes/filament-tiptap-editor)
 - [Filament Forms TinyEditor](https://github.com/mohamedsabil83/filament-forms-tinyeditor)
 
