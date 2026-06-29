@@ -1,6 +1,5 @@
 import Quill from 'quill';
-
-const BaseImage = Quill.import('formats/image');
+import BaseImage from 'quill/formats/image.js';
 
 /**
  * Quill 1.x's built-in image blot only whitelists `alt`, `height` and `width`.

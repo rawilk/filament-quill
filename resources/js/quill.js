@@ -12,19 +12,10 @@ import {
 import ImageUploader from './custom-handlers/image-uploader';
 import InsertBr from './custom-handlers/insert-br';
 import Header from "quill/formats/header.js";
-import BlotFormatterPkg from '@enzedonline/quill-blot-formatter2';
 import './blots/resizable-image';
-
-// quill-blot-formatter is a CommonJS module. Depending on esbuild's interop the
-// default import can come through either as the BlotFormatter class itself or as
-// the module namespace object ({ default: BlotFormatter, ... }). Unwrap so we
-// always register the actual constructor — registering the namespace object makes
-// Quill throw "X is not a constructor" while building the editor.
-const BlotFormatter = BlotFormatterPkg?.default ?? BlotFormatterPkg;
 
 Quill.register('modules/imageUploader', ImageUploader);
 Quill.register('modules/insertBr', InsertBr);
-Quill.register('modules/blotFormatter2', BlotFormatter);
 Quill.register('formats/header', Header);
 
 window.Quill = Quill;
@@ -114,13 +105,20 @@ export default function quill({
             }
         },
 
-        initEditor(content) {
+        async initEditor(content) {
             let _this = this;
 
             const fontStyles = _this.loadFonts();
             const sizeStyles = _this.loadFontSizes();
 
             _this.addStylesToDom(fontStyles + sizeStyles);
+
+            if (_this.options.allowImageResizing) {
+                const BlotFormatterPkg = await import('@enzedonline/quill-blot-formatter2');
+                const BlotFormatter = BlotFormatterPkg?.default ?? BlotFormatterPkg;
+
+                Quill.register('modules/blotFormatter2', BlotFormatter);
+            }
 
             _this.$root._editor = _this.editorInstance = new Quill(_this.$refs.quill, {
                 theme: _this.options.theme,
