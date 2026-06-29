@@ -12,7 +12,7 @@ import {
 import ImageUploader from './custom-handlers/image-uploader';
 import InsertBr from './custom-handlers/insert-br';
 import Header from "quill/formats/header.js";
-import BlotFormatterPkg from 'quill-blot-formatter';
+import BlotFormatterPkg from '@enzedonline/quill-blot-formatter2';
 import './blots/resizable-image';
 
 // quill-blot-formatter is a CommonJS module. Depending on esbuild's interop the
@@ -24,7 +24,7 @@ const BlotFormatter = BlotFormatterPkg?.default ?? BlotFormatterPkg;
 
 Quill.register('modules/imageUploader', ImageUploader);
 Quill.register('modules/insertBr', InsertBr);
-Quill.register('modules/blotFormatter', BlotFormatter);
+Quill.register('modules/blotFormatter2', BlotFormatter);
 Quill.register('formats/header', Header);
 
 window.Quill = Quill;
@@ -176,7 +176,7 @@ export default function quill({
         },
 
         setEditorValue(value, source = 'user') {
-            const normalizedValue = this.editor().clipboard.convert(value);
+            const normalizedValue = this.editor().clipboard.convert({ html: value ?? '' });
 
             this.editor().setContents(normalizedValue, source);
         },
@@ -290,18 +290,12 @@ export default function quill({
             };
 
             if (_this.options.allowImageResizing) {
-                modules.blotFormatter = {
+                modules.blotFormatter2 = {
                     align: {
-                        // Persist alignment as a `data-align` attribute only; the visual
-                        // float/margin is driven from CSS so the saved HTML stays clean
-                        // and survives Quill's clipboard converter on reload.
-                        aligner: {
-                            applyStyle: false,
-                        },
                         toolbar: {
                             // Theme the selected state from CSS (.is-selected) instead of
                             // letting the module apply its own inline highlight style.
-                            addButtonSelectStyle: false,
+                            buttonSelectedStyle: null,
                         },
                     },
                 };
