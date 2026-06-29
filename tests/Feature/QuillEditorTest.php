@@ -10,6 +10,7 @@ it('renders the editor toolbar and editable surface', function () {
     $page
         ->assertSee('Content')
         ->assertPresent('.fi-quill')
+        ->assertNoSmoke()
         ->assertPresent('.fi-quill-toolbar')
         ->assertPresent('.ql-editor')
         ->assertVisible('.ql-bold')
