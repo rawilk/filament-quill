@@ -2,11 +2,17 @@
     --ql-primary: theme('colors.primary.600');
     --ql-dark-primary: theme('colors.primary.400');
     --ql-border: theme('colors.gray.100');
-    --ql-dark-border: rgb(255 255 255 / 0.1);
+    --ql-dark-border: rgb(255 255 255 / 0.08);
+    --ql-toolbar-bg: theme('colors.white');
+    --ql-dark-toolbar-bg: rgb(39 39 42 / 0.96);
+    --ql-editor-bg: theme('colors.white');
+    --ql-dark-editor-bg: rgb(24 24 27);
     --ql-toolbar-button-color: theme('colors.gray.700');
-    --ql-dark-toolbar-button-color: theme('colors.gray.200');
+    --ql-dark-toolbar-button-color: rgb(212 212 216);
     --ql-toolbar-button-hover-bg: theme('colors.gray.100');
-    --ql-dark-toolbar-button-hover-bg: rgb(255 255 255 / 0.05);
+    --ql-dark-toolbar-button-hover-bg: rgb(255 255 255 / 0.08);
+    --ql-picker-bg: theme('colors.white');
+    --ql-dark-picker-bg: theme('colors.gray.900');
 }
 
 .ql-editor {
@@ -46,8 +52,15 @@
     font-sans;
 }
 
+.dark .ql-toolbar.ql-snow,
+.ql-toolbar.ql-snow.dark {
+    border-color: var(--ql-dark-border);
+}
+
 .ql-container.ql-snow {
-    @apply border-0;
+    @apply border-0
+    bg-[--ql-editor-bg]
+    dark:bg-[--ql-dark-editor-bg];
 }
 
 .ql-snow .ql-picker-label {
@@ -62,29 +75,63 @@
 
 .ql-snow.ql-toolbar button,
 .ql-snow .ql-toolbar button {
-    @apply text-[--ql-toolbar-button-color]
-    dark:text-[--ql-dark-toolbar-button-color]
-    hover:bg-[--ql-toolbar-button-hover-bg]
-    hover:text-[--ql-toolbar-button-color]
-    dark:hover:text-[--ql-dark-toolbar-button-color]
+    @apply hover:bg-[--ql-toolbar-button-hover-bg]
     dark:hover:bg-[--ql-dark-toolbar-button-hover-bg]
     rounded-lg
 }
 
 .ql-snow .ql-picker {
-    @apply text-[--ql-toolbar-button-color]
-    dark:text-[--ql-dark-toolbar-button-color]
-    hover:bg-[--ql-toolbar-button-hover-bg]
-    hover:text-[--ql-toolbar-button-color]
-    dark:hover:text-[--ql-dark-toolbar-button-color]
+    @apply hover:bg-[--ql-toolbar-button-hover-bg]
     dark:hover:bg-[--ql-dark-toolbar-button-hover-bg]
     rounded-lg;
 }
 
+.ql-snow.ql-toolbar button,
+.ql-snow .ql-toolbar button,
+.ql-snow .ql-picker,
+.ql-snow.ql-toolbar .ql-picker-label,
+.ql-snow .ql-toolbar .ql-picker-label,
+.ql-snow.ql-toolbar .ql-picker-item,
+.ql-snow .ql-toolbar .ql-picker-item {
+    color: var(--ql-toolbar-button-color);
+}
+
+:is(.dark .fi-quill, .fi-quill.dark) {
+    .ql-snow.ql-toolbar button,
+    .ql-snow .ql-toolbar button,
+    .ql-snow .ql-picker,
+    .ql-snow.ql-toolbar .ql-picker-label,
+    .ql-snow .ql-toolbar .ql-picker-label,
+    .ql-snow.ql-toolbar .ql-picker-item,
+    .ql-snow .ql-toolbar .ql-picker-item {
+        color: var(--ql-dark-toolbar-button-color);
+    }
+}
+
+.dark {
+    .ql-snow.ql-toolbar button,
+    .ql-snow .ql-toolbar button,
+    .ql-snow .ql-picker,
+    .ql-snow.ql-toolbar .ql-picker-label,
+    .ql-snow .ql-toolbar .ql-picker-label,
+    .ql-snow.ql-toolbar .ql-picker-item,
+    .ql-snow .ql-toolbar .ql-picker-item {
+        color: var(--ql-dark-toolbar-button-color);
+    }
+}
+
 .ql-snow.ql-toolbar .ql-picker-label,
 .ql-snow .ql-toolbar .ql-picker-label {
-    @apply hover:text-[--ql-toolbar-button-color]
-    dark:hover:text-[--ql-dark-toolbar-button-color];
+    @apply hover:text-[--ql-toolbar-button-color];
+}
+
+:is(.dark .fi-quill, .fi-quill.dark) {
+    .ql-snow.ql-toolbar .ql-picker-label,
+    .ql-snow .ql-toolbar .ql-picker-label {
+        &:hover {
+            color: var(--ql-dark-toolbar-button-color);
+        }
+    }
 }
 
 .ql-snow.ql-toolbar button .ql-stroke,
@@ -102,6 +149,23 @@
     @apply !fill-current;
 }
 
+.dark {
+    .ql-snow.ql-toolbar button,
+    .ql-snow .ql-toolbar button,
+    .ql-snow.ql-toolbar .ql-picker-label,
+    .ql-snow .ql-toolbar .ql-picker-label {
+        .ql-stroke:not(.ql-color-label),
+        .ql-stroke-miter:not(.ql-color-label) {
+            stroke: var(--ql-dark-toolbar-button-color) !important;
+        }
+
+        .ql-fill:not(.ql-color-label),
+        .ql-stroke.ql-fill:not(.ql-color-label) {
+            fill: var(--ql-dark-toolbar-button-color) !important;
+        }
+    }
+}
+
 .ql-snow.ql-toolbar button.ql-active,
 .ql-snow .ql-toolbar button.ql-active,
 .ql-snow.ql-toolbar button:focus,
@@ -112,17 +176,33 @@
     dark:text-[--ql-dark-primary];
 }
 
+:is(.dark .fi-quill, .fi-quill.dark) {
+    .ql-snow.ql-toolbar button.ql-active,
+    .ql-snow .ql-toolbar button.ql-active,
+    .ql-snow.ql-toolbar button:focus,
+    .ql-snow .ql-toolbar button:focus {
+        color: var(--ql-dark-primary);
+    }
+}
+
 .ql-toolbar.ql-snow .ql-picker.ql-expanded {
     .ql-picker-label {
         @apply border-transparent
-        text-[--ql-toolbar-button-color]
-        dark:text-[--ql-dark-toolbar-button-color];
+        text-[--ql-toolbar-button-color];
+    }
+}
+
+:is(.dark .fi-quill, .fi-quill.dark) {
+    .ql-toolbar.ql-snow .ql-picker.ql-expanded {
+        .ql-picker-label {
+            color: var(--ql-dark-toolbar-button-color);
+        }
     }
 }
 
 .ql-snow.ql-toolbar .ql-picker-options {
-    @apply bg-white
-    dark:bg-gray-800
+    @apply bg-[--ql-picker-bg]
+    dark:bg-[--ql-dark-picker-bg]
     rounded-lg
     shadow-lg
     dark:shadow-none
@@ -140,9 +220,7 @@
 
     .ql-picker-item {
         @apply hover:bg-[--ql-toolbar-button-hover-bg]
-        hover:text-gray-500
         dark:hover:bg-[--ql-dark-toolbar-button-hover-bg]
-        dark:text-gray-200
         rounded-md
         transition-colors
         px-2
@@ -197,8 +275,14 @@
 
 .ql-snow.ql-toolbar .ql-picker-label.ql-active,
 .ql-snow .ql-toolbar .ql-picker-label.ql-active {
-    @apply text-[--ql-toolbar-button-color]
-    dark:text-[--ql-dark-toolbar-button-color];
+    color: var(--ql-toolbar-button-color);
+}
+
+:is(.dark .fi-quill, .fi-quill.dark) {
+    .ql-snow.ql-toolbar .ql-picker-label.ql-active,
+    .ql-snow .ql-toolbar .ql-picker-label.ql-active {
+        color: var(--ql-dark-toolbar-button-color);
+    }
 }
 
 .ql-snow.ql-toolbar .ql-align .ql-picker-item {
@@ -213,9 +297,9 @@
 }
 
 .ql-snow .ql-picker.ql-font .ql-picker-item[data-value=serif]:before {
-    @apply font-serif;
+    @apply font-quill-serif;
 }
 
 .ql-snow .ql-picker.ql-font .ql-picker-item[data-value=monospace]:before {
-    @apply font-mono;
+    @apply font-quill-mono;
 }
