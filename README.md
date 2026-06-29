@@ -356,8 +356,12 @@ In the package's stylesheet, we configure monospace and serif font families to l
 
 ```css
 @theme {
-    --font-quill-serif: var(--font-serif-family), ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-    --font-quill-mono: var(--font-mono-family), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    --font-quill-serif:
+        var(--font-serif-family), ui-serif, Georgia, Cambria, "Times New Roman",
+        Times, serif;
+    --font-quill-mono:
+        var(--font-mono-family), ui-monospace, SFMono-Regular, Menlo, Monaco,
+        Consolas, "Liberation Mono", "Courier New", monospace;
 }
 ```
 

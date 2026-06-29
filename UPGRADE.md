@@ -85,8 +85,8 @@ If your app is still migrating to Tailwind CSS 4, update your PostCSS setup to u
 ```js
 module.exports = {
     plugins: {
-        'postcss-import': {},
-        '@tailwindcss/postcss': {},
+        "postcss-import": {},
+        "@tailwindcss/postcss": {},
         autoprefixer: {},
     },
 };
