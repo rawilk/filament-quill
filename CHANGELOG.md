@@ -2,6 +2,34 @@
 
 All notable changes to `filament-quill` will be documented in this file
 
+## v2.0.0 - 2026-06-29
+
+### Breaking Changes
+
+- PHP 8.3 or higher is now required.
+- Laravel 12 or higher is now required.
+- This release targets the Filament 5 stack.
+- The editor runtime has been upgraded to Quill 2. Test custom JavaScript handlers registered with `handlers()`, `onInit()`, or `onTextChange()` after upgrading, especially if they import Quill internals or Parchment classes.
+- The frontend build has moved to Tailwind CSS 4 and CSS-first configuration. If you render saved editor content outside the editor, update your theme stylesheet to use Tailwind v4 syntax with `@source`, `@source inline(...)`, and the package `content.css` import.
+- Published config, views, or translations should be refreshed and reviewed before upgrading in production.
+
+### What's Changed
+
+* Feature/image resizing by @SujalRatnaTamrakar in https://github.com/rawilk/filament-quill/pull/142
+* fix: assets are not loading in editor since Filament updated async-alpine to v2.0 by @bartlomiej-przymus in https://github.com/rawilk/filament-quill/pull/108
+* V2.x by @rawilk in https://github.com/rawilk/filament-quill/pull/143
+* Added support for Quill 2 and updated the editor runtime for Quill 2 compatibility.
+* Migrated the package CSS build to Tailwind CSS 4 and removed the old JavaScript Tailwind config.
+* Renamed package font utilities to `font-quill-*` so they do not conflict with Filament or Tailwind's default font families.
+* Improved dark mode colors for the editor toolbar, dropdowns, icons, editor surface, and toolbar/content divider.
+* Updated frontend dependencies, including Tailwind CSS 4, Quill 2, Playwright, and related build tooling.
+
+### New Contributors
+
+* @SujalRatnaTamrakar made their first contribution in https://github.com/rawilk/filament-quill/pull/142
+
+**Full Changelog**: https://github.com/rawilk/filament-quill/compare/v1.0.4...v2.0.0
+
 ## v1.0.4 - 2025-02-26
 
 ### What's Changed
