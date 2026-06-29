@@ -7,7 +7,6 @@ namespace Rawilk\FilamentQuill\Filament\Forms\Components;
 use Closure;
 use Filament\Forms\Components\Concerns;
 use Filament\Forms\Components\Contracts\CanBeLengthConstrained;
-use Filament\Forms\Components\Contracts\HasFileAttachments;
 use Filament\Forms\Components\Field;
 use Filament\Support\Concerns\HasExtraAlpineAttributes;
 use Rawilk\FilamentQuill\Concerns\HasCustomToolbarButtons;
@@ -16,13 +15,12 @@ use Rawilk\FilamentQuill\Concerns\HasQuillToolbar;
 use Rawilk\FilamentQuill\Concerns\InsertsPlaceholders;
 use Rawilk\FilamentQuill\Enums\ToolbarButton;
 
-class QuillEditor extends Field implements CanBeLengthConstrained, HasFileAttachments
+class QuillEditor extends Field implements CanBeLengthConstrained
 {
     use Concerns\CanBeLengthConstrained;
     use Concerns\HasExtraInputAttributes;
     use Concerns\HasFileAttachments;
     use Concerns\HasPlaceholder;
-    use Concerns\InteractsWithToolbarButtons;
     use HasCustomToolbarButtons;
     use HasExtraAlpineAttributes;
     use HasQuillOptions;

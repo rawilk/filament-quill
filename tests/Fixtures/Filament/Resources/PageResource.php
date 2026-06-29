@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Rawilk\FilamentQuill\Tests\Fixtures\Filament\Resources;
 
+use BackedEnum;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Rawilk\FilamentQuill\Filament\Forms\Components\QuillEditor;
@@ -20,11 +21,11 @@ final class PageResource extends Resource
 {
     protected static ?string $model = Page::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
                 TextInput::make('title'),
                 QuillEditor::make('content'),

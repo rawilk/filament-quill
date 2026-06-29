@@ -7,9 +7,11 @@ namespace Rawilk\FilamentQuill\Tests\Fixtures\Livewire;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Livewire\Component;
+use Rawilk\FilamentQuill\Tests\Fixtures\Concerns\InitializesErrorBag;
 
 class Livewire extends Component implements HasForms
 {
+    use InitializesErrorBag;
     use InteractsWithForms;
 
     public $data;
@@ -17,6 +19,11 @@ class Livewire extends Component implements HasForms
     public static function make(): static
     {
         return new static;
+    }
+
+    public function boot(): void
+    {
+        $this->resetErrorBag();
     }
 
     public function mount(): void
