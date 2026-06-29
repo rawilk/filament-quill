@@ -14,11 +14,11 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             -   name: Git checkout
-                uses: actions/checkout@v4
+                uses: actions/checkout@v7
                 with:
                     ref: ${{ github.head_ref }}
 
             -   name: Prettify markdown
-                uses: creyD/prettier_action@v4.3
+                uses: creyD/prettier_action@v4.6
                 with:
                     prettier_options: --write **/*.md

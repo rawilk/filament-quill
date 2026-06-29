@@ -15,13 +15,13 @@ jobs:
 
         steps:
             -   name: Checkout code
-                uses: actions/checkout@v4
+                uses: actions/checkout@v7
                 with:
                     fetch-depth: 2
                     ref: ${{ github.head_ref }}
 
             -   name: Laravel pint
-                uses: aglipanci/laravel-pint-action@2.5
+                uses: aglipanci/laravel-pint-action@2.6
                 with:
                     preset: laravel
 
@@ -31,7 +31,7 @@ jobs:
                 id: extract_branch
 
             -   name: Commit Changes
-                uses: stefanzweifel/git-auto-commit-action@v5
+                uses: stefanzweifel/git-auto-commit-action@v7
                 with:
                     commit_message: PHP Linting (Pint)
                     branch: ${{ steps.extract_branch.outputs.branch }}

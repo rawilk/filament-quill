@@ -16,6 +16,25 @@
             @apply inline-block;
         }
 
+        /* Image alignment set by the blot-formatter module (data-align attribute).
+           Rendered from CSS so the saved HTML stays free of inline styles and the
+           editor view matches the reloaded output. */
+        img[data-align="left"] {
+            float: left;
+            margin: 0 1em 1em 0;
+        }
+
+        img[data-align="center"] {
+            display: block;
+            float: none;
+            margin: 1em auto;
+        }
+
+        img[data-align="right"] {
+            float: right;
+            margin: 0 0 1em 1em;
+        }
+
         ul,
         ol {
             padding-left: 1.625em;

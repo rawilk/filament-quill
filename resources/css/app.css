@@ -3,6 +3,7 @@
 @import 'quill.css';
 @import 'custom.css';
 @import 'blots/image.css';
+@import 'blots/resize.css';
 @import 'content.css';
 
 @tailwind utilities;
