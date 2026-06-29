@@ -32,8 +32,8 @@
 }
 
 .ql-snow.ql-toolbar {
-    @apply bg-white
-    dark:bg-white/5
+    @apply bg-[--ql-toolbar-bg]
+    dark:bg-[--ql-dark-toolbar-bg]
     rounded-t-lg;
 
     &.sticky {

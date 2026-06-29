@@ -6,7 +6,7 @@
             @apply text-gray-800 dark:text-white;
         }
 
-        @apply font-sans;
+        @apply font-quill-sans;
     }
 
     &, .ql-editor {
@@ -115,12 +115,12 @@
 
         .ql-font-serif,
         .ql-editor .ql-font-serif {
-            @apply font-serif;
+            @apply font-quill-serif;
         }
 
         .ql-font-monospace,
         .ql-editor .ql-font-monospace {
-            @apply font-mono;
+            @apply font-quill-mono;
         }
 
         .ql-size-small,

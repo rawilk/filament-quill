@@ -1,64 +1,67 @@
 name: Tests
 
 on:
-    push:
-        paths:
-            - '**.php'
-            - 'phpunit.xml.dist'
-            - '.github/workflows/pest.yml'
-            - 'composer.json'
-    pull_request:
-        branches: [main]
+  push:
+    paths:
+      - '**.php'
+      - 'phpunit.xml.dist'
+      - '.github/workflows/pest.yml'
+      - 'composer.json'
+      - 'package.json'
+      - 'package-lock.json'
+  pull_request:
+    branches: [main]
 
 jobs:
-    test:
-        runs-on: ubuntu-latest
-        strategy:
-            fail-fast: true
-            matrix:
-                php: [8.4, 8.3, 8.2, 8.1]
-                laravel: [12.*, 11.*, 10.*]
-                stability: [prefer-lowest, prefer-stable]
-                include:
-                    -   laravel: 10.*
-                        testbench: 8.*
-                        carbon: ^2.63
-                    -   laravel: 11.*
-                        testbench: 9.*
-                        carbon: ^2.63
-                    -   laravel: 12.*
-                        testbench: 10.*
-                exclude:
-                    -   laravel: 11.*
-                        php: 8.1
-                    -   laravel: 12.*
-                        php: 8.1
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        php: [8.5, 8.4, 8.3]
+        laravel: [13.*, 12.*]
+        include:
+          - laravel: 12.*
+            testbench: 10.*
+          - laravel: 13.*
+            testbench: 11.*
 
-        name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }}
+    name: P${{ matrix.php }} - L${{ matrix.laravel }}
 
-        steps:
-            -   name: Checkout code
-                uses: actions/checkout@v7
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
 
-            -   name: Setup PHP
-                uses: shivammathur/setup-php@v2
-                with:
-                    php-version: ${{ matrix.php }}
-                    extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick
-                    coverage: none
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick
+          coverage: none
 
-            -   name: Setup problem matchers
-                run: |
-                    echo "::add-matcher::${{ runner.tool_cache }}/php.json"
-                    echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+      - name: Setup problem matchers
+        run: |
+          echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+          echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
-            -   name: Install dependencies
-                run: |
-                    composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
-                    composer update --${{ matrix.stability }} --prefer-dist --no-interaction
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
 
-            -   name: List Installed Dependencies
-                run: composer show -D
+      - name: Install dependencies
+        run: |
+          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
+          composer update --prefer-dist --no-interaction
+          npm ci
+          npx playwright install --with-deps chromium
 
-            -   name: Execute tests
-                run: vendor/bin/pest --stop-on-failure --parallel --display-skipped
+      - name: List Installed Dependencies
+        run: composer show -D
+
+      - name: Execute tests
+        run: vendor/bin/pest --stop-on-failure --parallel --display-skipped --exclude-group=browser
+
+      - name: Execute browser tests
+        run: vendor/bin/pest --stop-on-failure --display-skipped --group=browser

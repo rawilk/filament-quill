@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
+use Filament\Schemas\Schema;
 use Illuminate\Contracts\View\View;
 use Rawilk\FilamentQuill\Enums\ToolbarButton;
 use Rawilk\FilamentQuill\Filament\Forms\Components\QuillEditor;
@@ -91,9 +91,9 @@ test('can set available headers in quill editor', function () {
 
 class TestComponentWithForm extends LivewireFixture
 {
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->statePath('data')
             ->model(Page::class)
             ->schema([
