@@ -19,11 +19,25 @@ trait HasQuillOptions
 
     protected string|Closure|null $onInitCallback = null;
 
+    protected bool|Closure|null $allowImageResizing = null;
+
     public function useTheme(string|Closure|null $theme = null): static
     {
         $this->theme = $theme;
 
         return $this;
+    }
+
+    public function allowImageResizing(bool|Closure|null $condition = true): static
+    {
+        $this->allowImageResizing = $condition;
+
+        return $this;
+    }
+
+    public function shouldAllowImageResizing(): bool
+    {
+        return (bool) ($this->evaluate($this->allowImageResizing) ?? config('filament-quill.allow_image_resizing', false));
     }
 
     public function onTextChange(string|Closure|null $handler = null): static
@@ -62,6 +76,7 @@ trait HasQuillOptions
             'fonts' => $this->getFonts(),
             'fontSizes' => $this->getfontSizes(),
             'autofocus' => $this->isAutofocused(),
+            'allowImageResizing' => $this->shouldAllowImageResizing(),
         ];
     }
 }

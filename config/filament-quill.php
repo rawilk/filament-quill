@@ -33,4 +33,20 @@ return [
     |
     */
     'default_theme' => 'snow',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Allow Image Resizing
+    |--------------------------------------------------------------------------
+    |
+    | When enabled, images inside the editor can be resized via drag handles
+    | and aligned (left / center / right) using an overlay toolbar. This can
+    | also be toggled per-editor with the `allowImageResizing()` method.
+    |
+    | Resized dimensions are stored as `width`/`height` attributes and alignment
+    | as a `data-align` attribute on the `<img>` tag, so the output HTML stays
+    | clean and round-trips safely.
+    |
+    */
+    'allow_image_resizing' => false,
 ];
