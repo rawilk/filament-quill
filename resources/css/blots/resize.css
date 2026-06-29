@@ -1,0 +1,56 @@
+/*
+ * Theming for the quill-blot-formatter overlay (image resize handles + alignment
+ * toolbar) so it matches the Filament panel theme in both light and dark mode.
+ *
+ * The module applies most cosmetic properties as inline styles, so color/background
+ * overrides use Tailwind's important (`!`) modifier to win over the inline values.
+ * Positioning is left to the module's inline styles.
+ */
+
+.quill-content {
+    .blot-formatter__overlay {
+        @apply !border !border-dashed !border-primary-500;
+        box-sizing: border-box;
+    }
+
+    .blot-formatter__resize-handle {
+        @apply !bg-primary-500 !border !border-white dark:!border-gray-900;
+        border-radius: 9999px;
+        opacity: 1 !important;
+    }
+
+    .blot-formatter__toolbar-button {
+        @apply !bg-white dark:!bg-gray-800 !border !border-gray-300 dark:!border-gray-600;
+        overflow: hidden;
+    }
+
+    .blot-formatter__toolbar-button:first-child {
+        border-start-start-radius: 0.375rem;
+        border-end-start-radius: 0.375rem;
+    }
+
+    .blot-formatter__toolbar-button:last-child {
+        border-start-end-radius: 0.375rem;
+        border-end-end-radius: 0.375rem;
+    }
+
+    .blot-formatter__toolbar-button:hover,
+    .blot-formatter__toolbar-button.is-selected {
+        @apply !bg-primary-500;
+    }
+
+    /* The module also styles the inner <svg> with a bg/border; neutralise it so only
+       the button shows the chrome, and let the icon strokes inherit theme colors. */
+    .blot-formatter__toolbar-button svg {
+        @apply !border-0 !bg-transparent;
+    }
+
+    .blot-formatter__toolbar-button .ql-stroke {
+        @apply stroke-gray-700 dark:stroke-gray-200;
+    }
+
+    .blot-formatter__toolbar-button:hover .ql-stroke,
+    .blot-formatter__toolbar-button.is-selected .ql-stroke {
+        @apply stroke-white;
+    }
+}
