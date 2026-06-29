@@ -262,31 +262,36 @@ Resized dimensions are saved as `width` and `height` attributes on the `<img>` t
 
 ## Rendering Content
 
-To match the formatting you will see in the editor, you should wrap your user-generated content inside a container with the `quill-content prose max-w-none` classes on it. You will also need to make sure you have the styles for the content area from this package loaded as well. We've extracted those styles into a separate stylesheet, called `content.css`. Depending on how you're rendering the content, you may find it easier to bundle the `content.css` styles in with your theme's stylesheet. If you haven't set up a custom theme and are using a panel, you should follow the [Filament docs](https://filamentphp.com/docs/5.x/styling/overview) first on how to do that.
+To match the formatting you will see in the editor, wrap your user-generated content inside a container with the `quill-content prose max-w-none` classes on it. You will also need to load the package's content styles wherever you render saved editor HTML. We've extracted those styles into a separate stylesheet, called `content.css`. If you haven't set up a custom theme and are using a panel, follow the [Filament docs](https://filamentphp.com/docs/5.x/styling/overview) first.
 
 The following will apply in both a panel and standalone as well.
 
-1. In your stylesheet, import the content styles:
+1. In your Tailwind CSS 4 theme stylesheet, register the package views as a source and import the content styles:
 
 ```css
-@import "<path-to-vendor>/rawilk/filament-quill/resources/css/content.css";
+@import "tailwindcss";
 
-/*
- * Alternatively, you may import the entire stylesheet, however that's not recommended
- * since Quill's editor styles are quite expensive, and we load the stylesheet necessary
- * for the editor automatically for you.
- */
-/* @import '<path-to-vendor>/rawilk/filament-quill/resources/css/app.css'; */
-```
-
-2. Add the package's views as a source in the stylesheet for your custom theme.
-
-```css
 @source "<path-to-vendor>/rawilk/filament-quill/resources/**/*.blade.php";
-@source inline("quill-content");
+@source inline("quill-content prose max-w-none dark:prose-invert");
+
+@import "<path-to-vendor>/rawilk/filament-quill/resources/css/content.css";
 ```
 
-3. Make sure your `postcss.config.js` file is compatible with Tailwind CSS 4.
+If your theme stylesheet already imports Tailwind, add the package `@source` rules and `content.css` import to that same file instead of creating a second Tailwind entrypoint.
+
+2. If you use the `prose` classes shown below, make sure your theme includes Tailwind's typography plugin:
+
+```css
+@plugin "@tailwindcss/typography";
+```
+
+3. If you need to load all package styles manually, you can import `app.css` instead. This is usually not recommended for normal Filament fields because the package loads the editor styles for you.
+
+```css
+@import "<path-to-vendor>/rawilk/filament-quill/resources/css/app.css";
+```
+
+4. If your app is still migrating to Tailwind CSS 4, make sure your PostCSS setup uses the Tailwind 4 plugin:
 
 ```js
 module.exports = {
@@ -298,13 +303,13 @@ module.exports = {
 };
 ```
 
-4. Rebuild your custom theme.
+5. Rebuild your custom theme.
 
 ```bash
 npm run build
 ```
 
-5. Render the content
+6. Render the content
 
 ```html
 @use(Illuminate\Support\HtmlString)

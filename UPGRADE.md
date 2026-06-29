@@ -45,18 +45,18 @@ Pay special attention to custom code that imports Quill internals or Parchment c
 
 ## Rendering Saved Content
 
-If you render saved editor content outside the editor, make sure your frontend build imports the package content styles:
+If you render saved editor content outside the editor, add the package styles to your Tailwind CSS 4 theme stylesheet:
 
 ```css
+@import "tailwindcss";
+
+@source "<path-to-vendor>/rawilk/filament-quill/resources/**/*.blade.php";
+@source inline("quill-content prose max-w-none dark:prose-invert");
+
 @import "<path-to-vendor>/rawilk/filament-quill/resources/css/content.css";
 ```
 
-Add the package's views as a source in the stylesheet for your custom theme:
-
-```css
-@source "<path-to-vendor>/rawilk/filament-quill/resources/**/*.blade.php";
-@source inline("quill-content");
-```
+If your theme stylesheet already imports Tailwind, add the package `@source` rules and `content.css` import to that existing stylesheet.
 
 Render saved HTML inside a `quill-content prose max-w-none` wrapper:
 
@@ -72,9 +72,15 @@ If you support dark mode, add `dark:prose-invert`.
 
 ## Tailwind CSS 4
 
-The package build now uses Tailwind CSS 4. Tailwind configuration now lives in CSS, so define package sources, safelisted classes, fonts, and theme tokens in your stylesheet with `@source` and `@theme`.
+The package build now uses Tailwind CSS 4. Tailwind configuration now lives in CSS, so define package sources, generated classes, fonts, and theme tokens in your stylesheet with directives like `@source`, `@source inline(...)`, `@plugin`, and `@theme`.
 
-If you import the package CSS into your own frontend build, update your PostCSS setup to use the Tailwind 4 plugin:
+If you render saved content with `prose` classes, include Tailwind's typography plugin in your theme stylesheet:
+
+```css
+@plugin "@tailwindcss/typography";
+```
+
+If your app is still migrating to Tailwind CSS 4, update your PostCSS setup to use the Tailwind 4 plugin:
 
 ```js
 module.exports = {
