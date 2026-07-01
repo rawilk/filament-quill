@@ -30,6 +30,19 @@ it('updates the editor html when typing rich text', function () use ($editorHtml
         ->assertScript($editorHtml, '<p>Hello from the browser test</p>');
 })->group('browser');
 
+it('inserts a soft line break with shift enter', function () use ($editorHtml) {
+    $page = visit(route('quill-browser-test'));
+
+    $page
+        ->click('.ql-editor')
+        ->typeSlowly('.ql-editor', 'Hello', 10)
+        ->keys('.ql-editor', 'Shift+Enter')
+        ->typeSlowly('.ql-editor', 'World', 10)
+        ->assertScript('document.querySelectorAll(".ql-editor p").length', 1)
+        ->assertScript('document.querySelectorAll(".ql-editor br").length > 0')
+        ->assertScript($editorHtml . ".includes('<br>')");
+})->group('browser');
+
 it('applies toolbar formatting in the browser', function () use ($editorHtml) {
     $page = visit(route('quill-browser-test'));
 

@@ -10,8 +10,8 @@ class InsertBr {
         this.quill = quill;
         this.options = options;
 
-        this.quill.keyboard.bindings[13].unshift({
-            key: 13,
+        const binding = {
+            key: 'Enter',
             shiftKey: true,
             handler: function (range) {
                 this.quill.updateContents(
@@ -37,7 +37,10 @@ class InsertBr {
                 // Don't call other candidate handlers.
                 return false;
             },
-        });
+        };
+
+        this.quill.keyboard.bindings.Enter ??= [];
+        this.quill.keyboard.bindings.Enter.unshift(binding);
     }
 }
 
