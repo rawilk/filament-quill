@@ -16,7 +16,7 @@
 }
 
 .ql-editor {
-    @apply min-h-[--ql-min-height];
+    min-height: var(--ql-min-height);
 }
 
 .ql-snow.ql-toolbar,
