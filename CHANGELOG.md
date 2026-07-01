@@ -2,6 +2,15 @@
 
 All notable changes to `filament-quill` will be documented in this file
 
+## v2.0.1 - 2026-07-01
+
+### Fixed
+
+- Fixed Shift+Enter soft line breaks in the Quill editor. e37939a
+- Replaced Tailwind `@apply` usage for the editor minimum height with direct CSS for improved compatibility. 3d88fb1
+
+**Full Changelog**: https://github.com/rawilk/filament-quill/compare/v2.0.0...v2.0.1
+
 ## v2.0.0 - 2026-06-29
 
 ### Breaking Changes
